@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet
+package com.krasovitova.currencywallet.wallet.currency
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.krasovitova.currencywallet.R
 
 class CurrencyAdapter(
     val onItemClick: (String) -> Unit

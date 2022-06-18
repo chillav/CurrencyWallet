@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet
+package com.krasovitova.currencywallet.wallet.currency
 
 import androidx.recyclerview.widget.DiffUtil
 

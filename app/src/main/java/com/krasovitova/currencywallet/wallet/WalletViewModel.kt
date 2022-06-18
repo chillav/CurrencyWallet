@@ -2,14 +2,30 @@ package com.krasovitova.currencywallet.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlin.random.Random
 
 class WalletViewModel : ViewModel() {
     val currencies = MutableLiveData<List<String>>()
-    val transaction = MutableLiveData<List<WalletDescriptionItems>>()
-
+    val transactions = MutableLiveData<List<WalletDescriptionItems>>()
     init {
         currencies.value = getListOfCurrency()
-        transaction.value = getTransactionsHistory()
+        transactions.value = getTransactionsHistory()
+    }
+
+    fun addMockedTransactions() {
+        val oldList = transactions.value.orEmpty()
+        val newItems = listOf(
+            WalletDescriptionItems.Title(
+                Random.nextInt(),
+                Random.nextInt().toString(),
+                Random.nextInt().toString()
+            ),
+            WalletDescriptionItems.Transaction(
+                Random.nextInt(),
+                Random.nextInt().toString()
+            )
+        )
+        transactions.value = newItems + oldList
     }
 
     private fun getListOfCurrency(): List<String> {

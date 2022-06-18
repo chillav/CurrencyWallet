@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet.wallet.currency
+package com.krasovitova.currencywallet.currency
 
 import android.view.LayoutInflater
 import android.view.View

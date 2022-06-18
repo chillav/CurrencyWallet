@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Currency wallet</string>
     <string name="fab_content_description_add_transaction">Add transaction</string>
+    <string name="count">Количество</string>
+    <string name="currency">Валюта</string>
+    <string name="date">Дата</string>
 </resources>

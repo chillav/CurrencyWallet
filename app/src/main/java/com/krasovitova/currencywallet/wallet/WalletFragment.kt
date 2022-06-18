@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.krasovitova.currencywallet.R
-import com.krasovitova.currencywallet.wallet.currency.CurrencyAdapter
+import com.krasovitova.currencywallet.currency.CurrencyAdapter
 
 
 class WalletFragment : Fragment(R.layout.fragment_wallet) {
@@ -30,16 +29,14 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
             adapterCurrency.currencies = currencies
         }
 
-        viewModel.transaction.observe(viewLifecycleOwner) { transactions ->
+        viewModel.transactions.observe(viewLifecycleOwner) { transactions ->
             adapterTransactions.submitList(transactions)
         }
 
         val addTransactionFab = view.findViewById<FloatingActionButton>(R.id.fab_add_transaction)
 
         addTransactionFab.setOnClickListener { fab ->
-            Snackbar.make(fab, "Snackbar", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
+           viewModel.addMockedTransactions()
         }
     }
 }

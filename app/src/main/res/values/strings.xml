@@ -4,4 +4,5 @@
     <string name="count">Количество</string>
     <string name="currency">Валюта</string>
     <string name="date">Дата</string>
+    <string name="transactions">Транзакция</string>
 </resources>

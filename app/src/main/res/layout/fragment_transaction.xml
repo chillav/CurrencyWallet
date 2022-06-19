@@ -41,9 +41,8 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/menu_currency"
+        android:id="@+id/text_input_currency"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -73,7 +72,7 @@
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_currency">
+        app:layout_constraintTop_toBottomOf="@+id/text_input_currency">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_transaction_date"
@@ -93,5 +92,26 @@
         app:layout_constraintEnd_toEndOf="@id/input_layout_transaction_date"
         app:layout_constraintStart_toStartOf="@id/input_layout_transaction_date"
         app:layout_constraintTop_toTopOf="@id/input_layout_transaction_date" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_transaction_type"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/transactions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_transaction_date">
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_text_transaction_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

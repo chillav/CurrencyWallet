@@ -4,42 +4,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.krasovitova.currencywallet.R
 
 class CurrencyAdapter(
-    val onItemClick: (String) -> Unit
-) : RecyclerView.Adapter<CurrencyViewHolder>() {
+    val onItemClick: (CurrencyUi) -> Unit
+) : ListAdapter<CurrencyUi, CurrenciesViewHolder>(CurrencyDiffUtil()) {
 
-    var currencies: List<String> = emptyList()
-        set(value) {
-            val diffUtil = CurrencyDiffCallback(currencies, value)
-            val diffResults = DiffUtil.calculateDiff(diffUtil)
-            field = value
-            diffResults.dispatchUpdatesTo(this)
-        }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrenciesViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_currency, parent, false)
 
-        view.setOnClickListener {
-            val text = view.findViewById<TextView>(R.id.text_currency).text.toString()
-            onItemClick(text)
+        return CurrenciesViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: CurrenciesViewHolder, position: Int) {
+        val currency = currentList[position]
+        val title = "${currency.abbreviation} - ${currency.description}"
+
+        holder.title.text = title
+        holder.itemView.setOnClickListener {
+            onItemClick(currency)
         }
-
-        return CurrencyViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
-        val currency = currencies[position]
-        holder.currency.text = currency
-    }
-
-    override fun getItemCount() = currencies.size
+    override fun getItemCount() = currentList.size
 }
 
-class CurrencyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val currency: TextView = itemView.findViewById(R.id.text_currency)
+class CurrenciesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val title: TextView = itemView.findViewById(R.id.text_currency)
 }

@@ -2,15 +2,35 @@ package com.krasovitova.currencywallet.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.krasovitova.currencywallet.currency.Currency
+import com.krasovitova.currencywallet.currency.CurrencyUi
+
 
 class WalletViewModel : ViewModel() {
-    val currencies = Currency.titles()
     val transactions = MutableLiveData<List<WalletDescriptionItems>>()
+    val currencies = MutableLiveData<List<CurrencyUi>>()
 
     init {
         transactions.value = getTransactionsHistory()
+        currencies.value = getCurrencies()
     }
+
+    private fun getCurrencies(): List<CurrencyUi> {
+        return getUserCurrencies() + getAddingCurrencyTab()
+    }
+
+    /**
+     * Возвращает список валют, которые выбрал пользователь
+     */
+    private fun getUserCurrencies(): List<CurrencyUi> {
+        return emptyList()
+    }
+
+    private fun getAddingCurrencyTab() = CurrencyUi(
+        id = ADD_CURRENCY_TAB_ID,
+        abbreviation = ADD_CURRENCY_ABBREVIATION,
+        description = ""
+    )
+
 
     private fun getTransactionsHistory(): List<WalletDescriptionItems> {
         return listOf(
@@ -20,5 +40,10 @@ class WalletViewModel : ViewModel() {
             WalletDescriptionItems.Transaction(4, "500$"),
             WalletDescriptionItems.Transaction(5, "500$")
         )
+    }
+
+    companion object {
+        private const val ADD_CURRENCY_ABBREVIATION = "+"
+        const val ADD_CURRENCY_TAB_ID = 0
     }
 }

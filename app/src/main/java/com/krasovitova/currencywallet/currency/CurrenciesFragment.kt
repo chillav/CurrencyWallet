@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.krasovitova.currencywallet.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CurrenciesFragment : Fragment(R.layout.fragment_currencies) {
     private val viewModel: CurrencyViewModel by viewModels()
 

@@ -3,9 +3,12 @@ package com.krasovitova.currencywallet.wallet
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.krasovitova.currencywallet.currency.CurrencyUi
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class WalletViewModel : ViewModel() {
+@HiltViewModel
+class WalletViewModel @Inject constructor(
+) : ViewModel() {
     val transactions = MutableLiveData<List<WalletDescriptionItems>>()
     val currencies = MutableLiveData<List<CurrencyUi>>()
 

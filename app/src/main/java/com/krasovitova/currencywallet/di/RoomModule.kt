@@ -20,7 +20,7 @@ class RoomModule {
     @Singleton
     fun provideRoomDatabase(@ApplicationContext context: Context): CurrencyWalletDatabase {
         return Room.databaseBuilder(
-            context.applicationContext,
+            context,
             CurrencyWalletDatabase::class.java,
             ROOM_DATABASE_NAME
         ).build()

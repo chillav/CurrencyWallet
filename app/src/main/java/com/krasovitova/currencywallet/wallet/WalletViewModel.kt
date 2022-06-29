@@ -7,8 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class WalletViewModel @Inject constructor(
-) : ViewModel() {
+class WalletViewModel @Inject constructor() : ViewModel() {
     val transactions = MutableLiveData<List<WalletDescriptionItems>>()
     val currencies = MutableLiveData<List<CurrencyUi>>()
 
@@ -33,7 +32,6 @@ class WalletViewModel @Inject constructor(
         abbreviation = ADD_CURRENCY_ABBREVIATION,
         description = ""
     )
-
 
     private fun getTransactionsHistory(): List<WalletDescriptionItems> {
         return listOf(

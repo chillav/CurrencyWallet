@@ -3,10 +3,12 @@ package com.krasovitova.currencywallet.data
 import com.krasovitova.currencywallet.Constants
 import com.krasovitova.currencywallet.api.CurrencyApi
 import com.krasovitova.currencywallet.currency.CurrencyUi
+import com.krasovitova.currencywallet.sql.CurrencyDao
 import com.krasovitova.currencywallet.wallet.CurrencyRequest
 import javax.inject.Inject
 
 class CurrencyRepository @Inject constructor(
+    private val currencyDao: CurrencyDao,
     private val currencyApi: CurrencyApi
 ) {
     suspend fun getCurrencies(): List<CurrencyUi> {

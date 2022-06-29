@@ -1,10 +1,12 @@
-package com.krasovitova.currencywallet.currency
+package com.krasovitova.currencywallet.sql
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(tableName = "TABLE_CURRENCY", primaryKeys = ["ID"])
+@Entity(tableName = "CURRENCY_TABLE")
 data class CurrencyEntity(
+    @PrimaryKey
     @ColumnInfo(name = "ID")
     val id: Int,
     @ColumnInfo(name = "ABBREVIATION")

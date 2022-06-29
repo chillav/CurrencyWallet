@@ -14,5 +14,10 @@
     <color name="champagne_pink">#F2E3CF</color>
     <color name="ivory">#FDFDF2</color>
     <color name="azureish_white">#DCF0F4</color>
+    <color name="pale_blue">#BFF2ED</color>
+    <color name="blue">#86B8E7</color>
+    <color name="violet">#7B60BD</color>
+    <color name="super_pink">#CB5FA6</color>
+    <color name="pink">#E39DB0</color>
 
 </resources>

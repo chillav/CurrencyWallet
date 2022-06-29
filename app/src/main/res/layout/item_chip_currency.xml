@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:background="@drawable/bg_currency_tab"
-    android:backgroundTint="@color/dirty_white"
+    android:backgroundTint="@color/blue"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"

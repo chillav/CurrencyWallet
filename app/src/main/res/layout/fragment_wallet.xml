@@ -53,6 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@color/pale_blue"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +61,24 @@
         app:layout_constraintTop_toBottomOf="@+id/linear_layout"
         tools:itemCount="1"
         tools:listitem="@layout/item_chip_currency" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_currencies" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/blue"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_currencies"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_transactions"
@@ -80,7 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/dirty_white"
+        android:backgroundTint="@color/pale_blue"
         android:contentDescription="@string/fab_content_description_add_transaction"
         android:src="@drawable/ic_vector_plus"
         app:layout_constraintBottom_toBottomOf="parent"

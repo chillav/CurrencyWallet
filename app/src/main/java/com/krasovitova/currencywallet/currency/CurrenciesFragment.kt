@@ -2,10 +2,13 @@ package com.krasovitova.currencywallet.currency
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.krasovitova.currencywallet.R
+import com.krasovitova.currencywallet.transaction.TransactionFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,5 +26,14 @@ class CurrenciesFragment : Fragment(R.layout.fragment_currencies) {
         viewModel.currencies.observe(viewLifecycleOwner) {
             adapterCurrency.submitList(it)
         }
+        val buttonBack = view.findViewById<ImageView>(R.id.arrow_back)
+
+        buttonBack.setOnClickListener {
+            activity?.supportFragmentManager?.commit {
+                setReorderingAllowed(true)
+                replace(R.id.fragment_container, TransactionFragment()).addToBackStack(null)
+            }
+        }
+
     }
 }

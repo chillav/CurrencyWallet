@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="10dp"
     android:background="@drawable/bg_currency_tab"
-    android:backgroundTint="@color/dirty_white"
+    android:backgroundTint="@color/blue"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="4dp"
+        android:layout_margin="10dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:gravity="center" />
 

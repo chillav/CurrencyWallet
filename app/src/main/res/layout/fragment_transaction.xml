@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/blue"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -12,15 +21,16 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/pale_blue">
 
         <ImageView
             android:id="@+id/arrow_back"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="16dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="@color/jet_stream"
+            app:tint="@color/material_dynamic_primary30"
             tools:ignore="ContentDescription" />
     </LinearLayout>
 
@@ -37,7 +47,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:background="@drawable/bg_currency_tab"
+            android:backgroundTint="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +90,9 @@
             android:id="@+id/text_transaction_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:background="@drawable/bg_currency_tab"
+            android:backgroundTint="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

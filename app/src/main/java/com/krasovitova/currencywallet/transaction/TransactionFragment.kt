@@ -7,11 +7,9 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.google.android.material.textfield.TextInputEditText
 import com.krasovitova.currencywallet.R
-import com.krasovitova.currencywallet.wallet.WalletFragment
 import java.util.*
 
 class TransactionFragment : Fragment(R.layout.fragment_transaction) {
@@ -56,10 +54,7 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
         val buttonBack = view.findViewById<ImageView>(R.id.arrow_back)
 
         buttonBack.setOnClickListener {
-            activity?.supportFragmentManager?.commit {
-                setReorderingAllowed(true)
-                replace(R.id.fragment_container, WalletFragment()).addToBackStack(null)
-            }
+            activity?.onBackPressed()
         }
     }
 }

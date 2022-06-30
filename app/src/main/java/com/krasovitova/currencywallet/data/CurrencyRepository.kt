@@ -1,6 +1,5 @@
 package com.krasovitova.currencywallet.data
 
-import com.krasovitova.currencywallet.Constants
 import com.krasovitova.currencywallet.api.CurrencyApi
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.sql.CurrencyDao
@@ -12,15 +11,13 @@ class CurrencyRepository @Inject constructor(
     private val currencyApi: CurrencyApi
 ) {
     suspend fun getCurrencies(): List<CurrencyUi> {
-        val result = currencyApi.getCurrencies(
-            token = Constants.API_KEY
-        ).body()
+        val result = currencyApi.getCurrencies().body()
 
         return result?.currencies?.entries?.mapIndexed { index, entry ->
             CurrencyUi(
                 id = index.inc(), // индекс 0 занят табом для добавления валют
                 abbreviation = entry.key,
-                description = entry.value
+                description = entry.value.description.orEmpty()
             )
         }.orEmpty()
     }

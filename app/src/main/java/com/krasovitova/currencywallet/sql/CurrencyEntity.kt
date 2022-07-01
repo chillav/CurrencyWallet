@@ -3,6 +3,7 @@ package com.krasovitova.currencywallet.sql
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.krasovitova.currencywallet.currency.CurrencyUi
 
 @Entity(tableName = "CURRENCY_TABLE")
 data class CurrencyEntity(
@@ -14,3 +15,13 @@ data class CurrencyEntity(
     @ColumnInfo(name = "DESCRIPTION")
     val description: String
 )
+
+fun List<CurrencyEntity>.mapToUi(): List<CurrencyUi> {
+    return this.map {
+        CurrencyUi(
+            id = it.id,
+            abbreviation = it.abbreviation,
+            description = it.description
+        )
+    }
+}

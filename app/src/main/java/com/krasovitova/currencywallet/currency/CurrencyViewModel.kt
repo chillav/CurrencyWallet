@@ -7,13 +7,15 @@ import com.krasovitova.currencywallet.data.CurrencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
-    val currencies = MutableLiveData<List<CurrencyUi>>()
+    private val currencies = MutableLiveData<List<CurrencyUi>>()
+    val filteredCurrencies = MutableLiveData<List<CurrencyUi>>()
 
     init {
         getCurrencies()
@@ -23,6 +25,23 @@ class CurrencyViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val result = currencyRepository.getCurrencies()
             currencies.postValue(result)
+            filteredCurrencies.postValue(result)
+        }
+    }
+
+    fun filterCurrencies(text: String) {
+        filteredCurrencies.value = if (text.isBlank()) {
+            currencies.value
+        } else {
+            currencies.value?.filter {
+                it.description.lowercase(Locale.getDefault())
+                    .contains(text.lowercase(Locale.getDefault()))
+            }.orEmpty()
         }
     }
 }
+
+
+
+
+

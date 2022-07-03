@@ -19,6 +19,7 @@
     <color name="violet">#7B60BD</color>
     <color name="super_pink">#CB5FA6</color>
     <color name="pink">#E39DB0</color>
+    <color name="great">#808080</color>
     <color name="give_name_for_color">#004C69</color> <!--TODO give name-->
 
 </resources>

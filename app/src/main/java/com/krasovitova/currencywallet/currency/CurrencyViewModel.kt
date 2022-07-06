@@ -29,6 +29,12 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
+    fun saveCurrencyCheckedState(currency: CurrencyUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            currencyRepository.saveCurrencyCheckedState(currency)
+        }
+    }
+
     fun filterCurrencies(text: String) {
         filteredCurrencies.value = if (text.isBlank()) {
             currencies.value
@@ -40,8 +46,3 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 }
-
-
-
-
-

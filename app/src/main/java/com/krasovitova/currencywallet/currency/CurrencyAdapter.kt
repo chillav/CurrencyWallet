@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.krasovitova.currencywallet.R
 
 class CurrencyAdapter(
+
     val onItemClick: (CurrencyUi) -> Unit
 ) : ListAdapter<CurrencyUi, CurrenciesViewHolder>(CurrencyDiffUtil()) {
 
@@ -22,16 +24,21 @@ class CurrencyAdapter(
     override fun onBindViewHolder(holder: CurrenciesViewHolder, position: Int) {
         val currency = currentList[position]
         val title = "${currency.abbreviation} - ${currency.description}"
-
         holder.title.text = title
+        holder.checkBox.isChecked = currency.isSelected
+
         holder.itemView.setOnClickListener {
-            onItemClick(currency)
+            holder.checkBox.isChecked = !currency.isSelected
+            val updatedCurrency = currency.copy(isSelected = !currency.isSelected)
+            onItemClick(updatedCurrency)
         }
     }
 
     override fun getItemCount() = currentList.size
+
 }
 
 class CurrenciesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val title: TextView = itemView.findViewById(R.id.text_currency)
+    val checkBox: MaterialCheckBox = view.findViewById(R.id.checkbox)
 }

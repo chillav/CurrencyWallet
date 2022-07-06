@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.krasovitova.currencywallet.R
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class CurrenciesFragment : Fragment(R.layout.fragment_currencies) {
     private val viewModel: CurrencyViewModel by viewModels()
 
-    private val adapterCurrency = CurrencyAdapter({})
+    private val adapterCurrency = CurrencyAdapter {
+        viewModel.saveCurrencyCheckedState(currency = it)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

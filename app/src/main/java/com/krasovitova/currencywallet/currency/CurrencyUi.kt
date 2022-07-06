@@ -5,7 +5,8 @@ import com.krasovitova.currencywallet.sql.CurrencyEntity
 data class CurrencyUi(
     val id: Int,
     val abbreviation: String,
-    val description: String
+    val description: String,
+    val isSelected: Boolean,
 )
 
 fun List<CurrencyUi>.mapToEntity(): List<CurrencyEntity> {
@@ -13,7 +14,13 @@ fun List<CurrencyUi>.mapToEntity(): List<CurrencyEntity> {
         CurrencyEntity(
             id = it.id,
             abbreviation = it.abbreviation,
-            description = it.description
+            description = it.description,
+            isSelected = it.isSelected
         )
     }
 }
+
+
+
+
+

@@ -30,7 +30,8 @@ class WalletViewModel @Inject constructor() : ViewModel() {
     private fun getAddingCurrencyTab() = CurrencyUi(
         id = ADD_CURRENCY_TAB_ID,
         abbreviation = ADD_CURRENCY_ABBREVIATION,
-        description = ""
+        description = "",
+        isSelected = true
     )
 
     private fun getTransactionsHistory(): List<WalletDescriptionItems> {

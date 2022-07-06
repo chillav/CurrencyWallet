@@ -8,7 +8,6 @@
     android:backgroundTint="@color/blue"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
     android:minWidth="60dp"
     tools:ignore="ExtraText">
 
@@ -20,5 +19,13 @@
         android:layout_margin="10dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:gravity="center" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:clickable="false"
+        android:focusable="false" />
 
 </FrameLayout>

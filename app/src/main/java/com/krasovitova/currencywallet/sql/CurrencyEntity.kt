@@ -13,7 +13,9 @@ data class CurrencyEntity(
     @ColumnInfo(name = "ABBREVIATION")
     val abbreviation: String,
     @ColumnInfo(name = "DESCRIPTION")
-    val description: String
+    val description: String,
+    @ColumnInfo(name = "IS_SELECTED")
+    val isSelected: Boolean
 )
 
 fun List<CurrencyEntity>.mapToUi(): List<CurrencyUi> {
@@ -21,7 +23,9 @@ fun List<CurrencyEntity>.mapToUi(): List<CurrencyUi> {
         CurrencyUi(
             id = it.id,
             abbreviation = it.abbreviation,
-            description = it.description
+            description = it.description,
+            isSelected = it.isSelected
         )
     }
 }
+

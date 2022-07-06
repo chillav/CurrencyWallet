@@ -4,6 +4,7 @@ import com.krasovitova.currencywallet.api.CurrencyApi
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.currency.mapToEntity
 import com.krasovitova.currencywallet.sql.CurrencyDao
+import com.krasovitova.currencywallet.sql.CurrencyEntity
 import com.krasovitova.currencywallet.sql.mapToUi
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,12 +31,24 @@ class CurrencyRepository @Inject constructor(
             CurrencyUi(
                 id = index.inc(), // индекс 0 занят табом для добавления валют
                 abbreviation = entry.key,
-                description = entry.value.description.orEmpty()
+                description = entry.value.description.orEmpty(),
+                isSelected = false
             )
         }.orEmpty()
 
-        currencyDao.insert(currencies.mapToEntity())
+        currencyDao.insertAll(currencies.mapToEntity())
 
         return currencies
     }
+
+    suspend fun saveCurrencyCheckedState(currency: CurrencyUi) {
+        val currencyEntity = CurrencyEntity(
+            id = currency.id,
+            abbreviation = currency.abbreviation,
+            description = currency.description,
+            isSelected = currency.isSelected
+        )
+        currencyDao.insert(currencyEntity)
+    }
 }
+

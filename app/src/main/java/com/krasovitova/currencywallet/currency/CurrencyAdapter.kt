@@ -10,7 +10,6 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.krasovitova.currencywallet.R
 
 class CurrencyAdapter(
-
     val onItemClick: (CurrencyUi) -> Unit
 ) : ListAdapter<CurrencyUi, CurrenciesViewHolder>(CurrencyDiffUtil()) {
 
@@ -28,14 +27,12 @@ class CurrencyAdapter(
         holder.checkBox.isChecked = currency.isSelected
 
         holder.itemView.setOnClickListener {
-            holder.checkBox.isChecked = !currency.isSelected
             val updatedCurrency = currency.copy(isSelected = !currency.isSelected)
             onItemClick(updatedCurrency)
         }
     }
 
     override fun getItemCount() = currentList.size
-
 }
 
 class CurrenciesViewHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -2,29 +2,37 @@ package com.krasovitova.currencywallet.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.krasovitova.currencywallet.currency.CurrencyUi
+import com.krasovitova.currencywallet.data.CurrencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WalletViewModel @Inject constructor() : ViewModel() {
+class WalletViewModel @Inject constructor(
+    private val currencyRepository: CurrencyRepository
+) : ViewModel() {
     val transactions = MutableLiveData<List<WalletDescriptionItems>>()
     val currencies = MutableLiveData<List<CurrencyUi>>()
 
-    init {
-        transactions.value = getTransactionsHistory()
-        currencies.value = getCurrencies()
+    fun initState() {
+        viewModelScope.launch(Dispatchers.IO) {
+            transactions.postValue(getTransactionsHistory())
+            currencies.postValue(getCurrencies())
+        }
     }
 
-    private fun getCurrencies(): List<CurrencyUi> {
+    private suspend fun getCurrencies(): List<CurrencyUi> {
         return getUserCurrencies() + getAddingCurrencyTab()
     }
 
     /**
      * Возвращает список валют, которые выбрал пользователь
      */
-    private fun getUserCurrencies(): List<CurrencyUi> {
-        return emptyList()
+    private suspend fun getUserCurrencies(): List<CurrencyUi> {
+        return currencyRepository.getUserCurrencies()
     }
 
     private fun getAddingCurrencyTab() = CurrencyUi(

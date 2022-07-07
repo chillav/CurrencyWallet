@@ -50,5 +50,9 @@ class CurrencyRepository @Inject constructor(
         )
         currencyDao.insert(currencyEntity)
     }
+
+    suspend fun getUserCurrencies(): List<CurrencyUi> {
+        return currencyDao.getUserCurrencies().mapToUi()
+    }
 }
 

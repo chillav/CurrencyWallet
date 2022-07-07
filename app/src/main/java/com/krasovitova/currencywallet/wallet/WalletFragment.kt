@@ -12,8 +12,9 @@ import com.krasovitova.currencywallet.currency.CurrenciesFragment
 import com.krasovitova.currencywallet.currency.CurrencyChipAdapter
 import com.krasovitova.currencywallet.transaction.TransactionFragment
 import com.krasovitova.currencywallet.wallet.WalletViewModel.Companion.ADD_CURRENCY_TAB_ID
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class WalletFragment : Fragment(R.layout.fragment_wallet) {
 
     private val viewModel: WalletViewModel by viewModels()
@@ -54,5 +55,6 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
                 replace(R.id.fragment_container, TransactionFragment()).addToBackStack(null)
             }
         }
+        viewModel.initState()
     }
 }

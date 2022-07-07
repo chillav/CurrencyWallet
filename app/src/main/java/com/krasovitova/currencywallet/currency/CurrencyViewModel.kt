@@ -30,6 +30,17 @@ class CurrencyViewModel @Inject constructor(
     }
 
     fun saveCurrencyCheckedState(currency: CurrencyUi) {
+        val newCurrencies = currencies.value?.map {
+            if (it.id == currency.id) currency else it
+        }.orEmpty()
+
+        val newFilteredCurrencies = filteredCurrencies.value?.map {
+            if (it.id == currency.id) currency else it
+        }.orEmpty()
+
+        currencies.value = newCurrencies
+        filteredCurrencies.value = newFilteredCurrencies
+
         viewModelScope.launch(Dispatchers.IO) {
             currencyRepository.saveCurrencyCheckedState(currency)
         }

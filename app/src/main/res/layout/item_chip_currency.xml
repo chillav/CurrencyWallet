@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:background="@drawable/bg_currency_tab"
-    android:backgroundTint="@color/blue"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
@@ -21,7 +20,7 @@
         android:backgroundTint="@color/cardview_dark_background"
         android:gravity="center"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         tools:text="+" />
 
 </FrameLayout>

@@ -7,4 +7,6 @@
     <string name="transactions">Транзакция</string>
     <string name="list_currencies">Список валют</string>
     <string name="search">Поиск</string>
+    <string name="adding">Добавить</string>
+    <string name="sum">Сумма</string>
 </resources>

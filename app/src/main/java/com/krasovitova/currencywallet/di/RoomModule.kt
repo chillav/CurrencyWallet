@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.krasovitova.currencywallet.Constants.ROOM_DATABASE_NAME
 import com.krasovitova.currencywallet.sql.CurrencyDao
 import com.krasovitova.currencywallet.sql.CurrencyWalletDatabase
+import com.krasovitova.currencywallet.transaction.TransactionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +31,11 @@ class RoomModule {
     @Singleton
     fun provideCurrencyDao(database: CurrencyWalletDatabase): CurrencyDao {
         return database.currencyDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionDao(database: CurrencyWalletDatabase): TransactionDao {
+        return database.transactionDao()
     }
 }

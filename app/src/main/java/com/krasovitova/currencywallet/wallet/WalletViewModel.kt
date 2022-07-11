@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.data.CurrencyRepository
+import com.krasovitova.currencywallet.transaction.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WalletViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository
+    private val currencyRepository: CurrencyRepository,
+    private val transactionRepository: TransactionRepository
 ) : ViewModel() {
     val transactions = MutableLiveData<List<WalletDescriptionItems>>()
     val currencies = MutableLiveData<List<CurrencyUi>>()
@@ -42,14 +44,13 @@ class WalletViewModel @Inject constructor(
         isSelected = true
     )
 
-    private fun getTransactionsHistory(): List<WalletDescriptionItems> {
-        return listOf(
-            WalletDescriptionItems.Title(0, "12.06.2022", "1212$"),
-            WalletDescriptionItems.Transaction(1, "1212$"),
-            WalletDescriptionItems.Title(3, "13.06.2022", "1000$"),
-            WalletDescriptionItems.Transaction(4, "500$"),
-            WalletDescriptionItems.Transaction(5, "500$")
-        )
+    private suspend fun getTransactionsHistory(): List<WalletDescriptionItems> {
+        return transactionRepository.getTransactions().map {
+            WalletDescriptionItems.Transaction(
+                id = it.id ?: 0,
+                transactionName = "${it.sum} / ${it.currency} / ${it.date}"
+            )
+        }
     }
 
     companion object {

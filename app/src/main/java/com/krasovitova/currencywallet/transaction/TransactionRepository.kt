@@ -1,6 +1,7 @@
 package com.krasovitova.currencywallet.transaction
 
 import com.krasovitova.currencywallet.Constants.DATE_FORMAT
+import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,8 +24,16 @@ class TransactionRepository @Inject constructor(
 
     private fun parseDate(date: String): Long {
         return try {
-            dateFormat.parse(date)?.time ?: 0L// TODO add log
+            val parsedDate = dateFormat.parse(date)?.time
+            if (parsedDate == null) {
+                Timber.e("Date parsing returns null, date set to zero")
+                0L
+            } else {
+                parsedDate
+            }
+
         } catch (exception: ParseException) {
+            Timber.e(exception, "Date parsing failed, date set to zero")
             0L
         }
     }

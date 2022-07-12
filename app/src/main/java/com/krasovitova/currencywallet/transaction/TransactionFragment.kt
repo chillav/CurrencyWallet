@@ -5,56 +5,93 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.textfield.TextInputEditText
+import com.krasovitova.currencywallet.Constants.DATE_FORMAT
 import com.krasovitova.currencywallet.R
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class TransactionFragment : Fragment(R.layout.fragment_transaction) {
     private val viewModel: TransactionViewModel by viewModels()
+
+    private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapterCurrencyMenu = ArrayAdapter(
-            requireContext(),
-            R.layout.item_dropdown_text,
-            viewModel.currencies
+        val sumView = view.findViewById<TextInputEditText>(R.id.text_input_sum)
+        val currencyView = view.findViewById<AutoCompleteTextView>(
+            R.id.auto_complete_text_currency
         )
+
+        viewModel.abbreviationsCurrencies.observe(viewLifecycleOwner) {
+            val adapterCurrencyMenu = ArrayAdapter(
+                requireContext(),
+                R.layout.item_dropdown_text,
+                it
+            )
+            currencyView.setAdapter(adapterCurrencyMenu)
+        }
+
         val adapterTransactionTypeMenu = ArrayAdapter(
             requireContext(),
             R.layout.item_dropdown_text,
             viewModel.transactionTypes
         )
-        view.findViewById<AutoCompleteTextView>(R.id.auto_complete_text_currency)
-            .setAdapter(adapterCurrencyMenu)
 
-
-        view.findViewById<AutoCompleteTextView>(R.id.auto_complete_text_transaction_type)
-            .setAdapter(adapterTransactionTypeMenu)
+        val transactionTypeView = view.findViewById<AutoCompleteTextView>(
+            R.id.auto_complete_text_transaction_type
+        ).apply {
+            setAdapter(adapterTransactionTypeMenu)
+        }
 
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val dateTransactionAreaClick: View = view.findViewById(R.id.transaction_date_click_area)
-        val transactionDate = view.findViewById<TextInputEditText>(R.id.text_transaction_date)
+        val dateTransactionAreaView =
+            view.findViewById<View>(R.id.transaction_date_click_area)
 
-        dateTransactionAreaClick.setOnClickListener {
+        val transactionDateView = view.findViewById<TextInputEditText>(R.id.text_transaction_date)
+
+        dateTransactionAreaView.setOnClickListener {
             DatePickerDialog(
                 requireContext(), { _, year, month, day ->
-                    val dateString = "$day.${month.inc()}.$year"
-                    transactionDate.setText(dateString)
+                    calendar.set(year, month, day)
+                    val dateString = dateFormat.format(calendar.time)
+                    transactionDateView.setText(dateString)
                 }, year, month, day
             ).show()
         }
+
         val buttonBack = view.findViewById<ImageView>(R.id.arrow_back)
 
         buttonBack.setOnClickListener {
             activity?.onBackPressed()
+        }
+
+        val buttonTransaction = view.findViewById<Button>(R.id.button_transaction)
+
+        buttonTransaction.setOnClickListener {
+            val currency = currencyView.text
+            val type = transactionTypeView.text
+            val date = transactionDateView.text
+            val sum = sumView.text
+            viewModel.saveTransaction(
+                transactionUi = TransactionUi(
+                    sum = sum.toString(),
+                    currency = currency.toString(),
+                    date = date.toString(),
+                    type = type.toString()
+                )
+            )
         }
     }
 }

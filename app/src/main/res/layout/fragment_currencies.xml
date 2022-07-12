@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:autofillHints="false"
-        android:background="@drawable/bg_currency_tab"
-        android:backgroundTint="@color/great"
+        android:background="@drawable/bg_frame"
         android:drawableEnd="@drawable/ic_search"
         android:drawableTint="@color/great"
         android:hint="@string/search"
@@ -26,10 +25,10 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <View
-        android:id="@+id/view2"
+        android:id="@+id/view_toolbar"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/blue"
+        android:background="@color/violet"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +38,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pale_blue"
+        android:background="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/list_currencies"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,4 +82,15 @@
         tools:itemCount="4"
         tools:listitem="@layout/item_currency" />
 
+    <Button
+        android:id="@+id/button_transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/blue"
+        android:text="@string/adding"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

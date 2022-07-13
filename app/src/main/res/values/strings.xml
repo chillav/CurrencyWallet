@@ -9,4 +9,5 @@
     <string name="search">Поиск</string>
     <string name="adding">Добавить</string>
     <string name="sum">Сумма</string>
+    <string name="setting_transaction">Настройка транзакции</string>
 </resources>

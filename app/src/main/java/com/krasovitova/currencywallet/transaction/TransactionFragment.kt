@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.textfield.TextInputEditText
@@ -71,9 +71,7 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
             ).show()
         }
 
-        val buttonBack = view.findViewById<ImageView>(R.id.arrow_back)
-
-        buttonBack.setOnClickListener {
+        view.findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener {
             activity?.onBackPressed()
         }
 

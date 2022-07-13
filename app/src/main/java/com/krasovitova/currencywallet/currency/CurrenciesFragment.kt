@@ -3,7 +3,7 @@ package com.krasovitova.currencywallet.currency
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,11 +29,11 @@ class CurrenciesFragment : Fragment(R.layout.fragment_currencies) {
         viewModel.filteredCurrencies.observe(viewLifecycleOwner) {
             adapterCurrency.submitList(it)
         }
-        val buttonBack = view.findViewById<ImageView>(R.id.arrow_back)
 
-        buttonBack.setOnClickListener {
+        view.findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener {
             activity?.onBackPressed()
         }
+
         val searchCurrency = view.findViewById<EditText>(R.id.text_search_currency)
 
         searchCurrency.addTextChangedListener(

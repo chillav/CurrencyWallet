@@ -6,8 +6,10 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.data.CurrencyRepository
+import com.krasovitova.currencywallet.data.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +20,8 @@ class TransactionViewModel @Inject constructor(
 ) : ViewModel() {
     private val currencies = MutableLiveData<List<CurrencyUi>>()
     val transactionTypes = TransactionType.titles()
+
+    val sideEffect = Channel<TransactionScreenSideEffects>()
 
     val abbreviationsCurrencies by lazy {
         currencies.map { list ->
@@ -37,7 +41,36 @@ class TransactionViewModel @Inject constructor(
 
     fun saveTransaction(transactionUi: TransactionUi) {
         viewModelScope.launch(Dispatchers.IO) {
-            transactionRepository.saveTransaction(transactionUi)
+            val errors = getTransactionErrors(transactionUi)
+
+            if (errors.isEmpty()) {
+                transactionRepository.saveTransaction(transactionUi)
+                // TODO вызвать сайд еффект
+            } else {
+                sideEffect.send(
+                    TransactionScreenSideEffects.ValidationFailed(errors)
+                )
+            }
         }
     }
+
+    private fun getTransactionErrors(transaction: TransactionUi): List<SaveTransactionError> {
+        val errors = mutableListOf<SaveTransactionError>()
+
+        if (transaction.sum.isBlank()) {
+            errors.add(SaveTransactionError.EMPTY_SUM)
+        }
+        if (transaction.date.isBlank()) {
+            errors.add(SaveTransactionError.EMPTY_DATE)
+        }
+        if (transaction.currency.isBlank()) {
+            errors.add(SaveTransactionError.EMPTY_CURRENCY)
+        }
+        if (transaction.type.isBlank()) {
+            errors.add(SaveTransactionError.EMPTY_TYPE)
+        }
+        return errors
+    }
 }
+
+

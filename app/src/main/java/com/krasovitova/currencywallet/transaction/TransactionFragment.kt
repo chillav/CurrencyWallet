@@ -9,10 +9,13 @@ import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.krasovitova.currencywallet.Constants.DATE_FORMAT
 import com.krasovitova.currencywallet.R
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.channels.consumeEach
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,21 +78,56 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
             activity?.onBackPressed()
         }
 
-        val buttonTransaction = view.findViewById<Button>(R.id.button_transaction)
+        val buttonTransaction = view.findViewById<Button>(R.id.button_add_transaction)
 
         buttonTransaction.setOnClickListener {
-            val currency = currencyView.text
-            val type = transactionTypeView.text
-            val date = transactionDateView.text
-            val sum = sumView.text
+            val currency = currencyView.text.toString()
+            val type = transactionTypeView.text.toString()
+            val date = transactionDateView.text.toString()
+            val sum = sumView.text.toString()
             viewModel.saveTransaction(
                 transactionUi = TransactionUi(
-                    sum = sum.toString(),
-                    currency = currency.toString(),
-                    date = date.toString(),
-                    type = type.toString()
+                    sum = sum,
+                    currency = currency,
+                    date = date,
+                    type = type
                 )
             )
+            // activity?.onBackPressed() TODO вынести в сайд еффект
+        }
+
+        handleSideEffects()
+    }
+
+    private fun handleSideEffects() {
+        lifecycleScope.launchWhenResumed {
+            viewModel.sideEffect.consumeEach { effect ->
+                when (effect) {
+                    is TransactionScreenSideEffects.ValidationFailed -> {
+                        effect.errors.forEach { error ->
+                            when (error) {
+                                // TODO разбить на функции и вынести строки
+                                SaveTransactionError.EMPTY_SUM -> {
+                                    view?.findViewById<TextInputLayout>(R.id.text_count)?.error =
+                                        "Введите сумму"
+                                }
+                                SaveTransactionError.EMPTY_CURRENCY -> {
+                                    view?.findViewById<TextInputLayout>(R.id.text_input_currency)?.error =
+                                        "Выберите валюту"
+                                }
+                                SaveTransactionError.EMPTY_DATE -> {
+                                    view?.findViewById<TextInputLayout>(R.id.input_layout_transaction_date)?.error =
+                                        "Выберите дату"
+                                }
+                                SaveTransactionError.EMPTY_TYPE -> {
+                                    view?.findViewById<TextInputLayout>(R.id.text_input_transaction_type)?.error =
+                                        "Выберите тип транзакции"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

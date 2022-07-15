@@ -3,9 +3,9 @@ package com.krasovitova.currencywallet.data
 import com.krasovitova.currencywallet.api.CurrencyApi
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.currency.mapToEntity
-import com.krasovitova.currencywallet.sql.CurrencyDao
-import com.krasovitova.currencywallet.sql.CurrencyEntity
-import com.krasovitova.currencywallet.sql.mapToUi
+import com.krasovitova.currencywallet.data.database.currency.CurrencyDao
+import com.krasovitova.currencywallet.data.database.currency.CurrencyEntity
+import com.krasovitova.currencywallet.data.database.currency.mapToUi
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -3,9 +3,9 @@ package com.krasovitova.currencywallet.di
 import android.content.Context
 import androidx.room.Room
 import com.krasovitova.currencywallet.Constants.ROOM_DATABASE_NAME
-import com.krasovitova.currencywallet.sql.CurrencyDao
-import com.krasovitova.currencywallet.sql.CurrencyWalletDatabase
-import com.krasovitova.currencywallet.transaction.TransactionDao
+import com.krasovitova.currencywallet.data.database.CurrencyWalletDatabase
+import com.krasovitova.currencywallet.data.database.currency.CurrencyDao
+import com.krasovitova.currencywallet.data.database.transaction.TransactionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

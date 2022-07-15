@@ -9,7 +9,7 @@ class WalletDescriptionDiffUtil : DiffUtil.ItemCallback<WalletDescriptionItems>(
     ): Boolean {
         return when {
             oldItem is WalletDescriptionItems.Title && newItem is WalletDescriptionItems.Title -> {
-                oldItem.id == newItem.id
+                oldItem.date == newItem.date
             }
             oldItem is WalletDescriptionItems.Transaction && newItem is WalletDescriptionItems.Transaction -> {
                 oldItem.id == newItem.id

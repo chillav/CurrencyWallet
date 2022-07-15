@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.data.CurrencyRepository
-import com.krasovitova.currencywallet.transaction.TransactionRepository
+import com.krasovitova.currencywallet.data.TransactionRepository
+import com.krasovitova.currencywallet.utils.sum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,12 +47,35 @@ class WalletViewModel @Inject constructor(
     )
 
     private suspend fun getTransactionsHistory(): List<WalletDescriptionItems> {
-        return transactionRepository.getTransactions().map {
-            WalletDescriptionItems.Transaction(
-                id = it.id ?: 0,
-                transactionName = "${it.sum} / ${it.currency} / ${it.date}"
+        return transactionRepository.getTransactions().groupBy {
+            it.date
+        }.map { (date, transactions) ->
+            val list = mutableListOf<WalletDescriptionItems>()
+
+            val sum = transactions.mapNotNull {
+                if (it.sum.isNotBlank()) {
+                    BigDecimal(it.sum)
+                } else null
+            }.sum().toString()
+
+            list.add(
+                WalletDescriptionItems.Title(
+                    date = date,
+                    sum = sum
+                )
             )
-        }
+
+            transactions.forEachIndexed { index, transactionUi ->
+                list.add(
+                    WalletDescriptionItems.Transaction(
+                        id = index,
+                        transactionName = "${transactionUi.sum} / ${transactionUi.currency} / ${transactionUi.date}"
+                    )
+                )
+            }
+
+            list
+        }.flatten()
     }
 
     companion object {

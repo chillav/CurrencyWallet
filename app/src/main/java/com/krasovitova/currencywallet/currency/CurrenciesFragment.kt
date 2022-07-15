@@ -2,6 +2,7 @@ package com.krasovitova.currencywallet.currency
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
@@ -41,5 +42,8 @@ class CurrenciesFragment : Fragment(R.layout.fragment_currencies) {
                 viewModel.filterCurrencies(text.toString())
             }
         )
+        view.findViewById<Button>(R.id.button_add_currency).setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 }

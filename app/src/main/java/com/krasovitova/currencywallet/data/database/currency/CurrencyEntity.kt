@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet.sql
+package com.krasovitova.currencywallet.data.database.currency
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -52,7 +52,7 @@
         tools:listitem="@layout/item_currency" />
 
     <Button
-        android:id="@+id/button_transaction"
+        android:id="@+id/button_add_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

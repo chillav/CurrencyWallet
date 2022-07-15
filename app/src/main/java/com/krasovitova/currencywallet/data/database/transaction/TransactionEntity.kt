@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet.transaction
+package com.krasovitova.currencywallet.data.database.transaction
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

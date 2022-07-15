@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:contentDescription="@string/fab_content_description_add_transaction"
-        android:src="@drawable/ic_white_add"
+        android:src="@drawable/ic_vector_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/jet_stream" />

@@ -1,6 +1,6 @@
 package com.krasovitova.currencywallet.currency
 
-import com.krasovitova.currencywallet.sql.CurrencyEntity
+import com.krasovitova.currencywallet.data.database.currency.CurrencyEntity
 
 data class CurrencyUi(
     val id: Int,

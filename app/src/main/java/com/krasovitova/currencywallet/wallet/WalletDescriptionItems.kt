@@ -2,7 +2,6 @@ package com.krasovitova.currencywallet.wallet
 
 sealed class WalletDescriptionItems {
     data class Title(
-        val id: Int,
         val date: String,
         val sum: String
     ) : WalletDescriptionItems()

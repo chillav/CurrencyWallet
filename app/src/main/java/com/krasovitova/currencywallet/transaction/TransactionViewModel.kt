@@ -45,7 +45,7 @@ class TransactionViewModel @Inject constructor(
 
             if (errors.isEmpty()) {
                 transactionRepository.saveTransaction(transactionUi)
-                // TODO вызвать сайд еффект
+                sideEffect.send(TransactionScreenSideEffects.NavigateBack)
             } else {
                 sideEffect.send(
                     TransactionScreenSideEffects.ValidationFailed(errors)

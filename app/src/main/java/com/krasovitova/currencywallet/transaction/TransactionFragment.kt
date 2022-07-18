@@ -85,6 +85,7 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
             val type = transactionTypeView.text.toString()
             val date = transactionDateView.text.toString()
             val sum = sumView.text.toString()
+
             viewModel.saveTransaction(
                 transactionUi = TransactionUi(
                     sum = sum,
@@ -93,7 +94,6 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
                     type = type
                 )
             )
-            // activity?.onBackPressed() TODO вынести в сайд еффект
         }
 
         handleSideEffects()
@@ -125,6 +125,9 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
                                 }
                             }
                         }
+                    }
+                    TransactionScreenSideEffects.NavigateBack -> {
+                        activity?.onBackPressed()
                     }
                 }
             }

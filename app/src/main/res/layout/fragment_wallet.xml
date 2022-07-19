@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Осталось на сегодня"
+            android:text="@string/remaining_for_today"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="gone" />
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Осталось дней "
+            android:text="@string/remaining_day"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="gone" />
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Кошелек"
+            android:text="@string/wallet"
             android:textSize="16sp"
             android:textStyle="bold" />
 

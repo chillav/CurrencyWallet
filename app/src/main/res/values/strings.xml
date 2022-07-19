@@ -10,4 +10,7 @@
     <string name="adding">Добавить</string>
     <string name="sum">Сумма</string>
     <string name="setting_transaction">Настройка транзакции</string>
+    <string name="remaining_for_today">Осталось на сегодня</string>
+    <string name="remaining_day">Осталось дней</string>
+    <string name="wallet">Кошелек</string>
 </resources>

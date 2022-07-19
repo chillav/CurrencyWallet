@@ -19,7 +19,7 @@
         android:layout_margin="4dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="normal"
         tools:text="+" />
 

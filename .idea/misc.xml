@@ -14,6 +14,7 @@
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/drawable/ic_white_add.xml" value="0.155" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/drawable/rectangle.xml" value="0.152" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/activity_two.xml" value="0.25" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/fragment_currencies.xml" value="0.2359375" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/fragment_currencies_list.xml" value="0.2359375" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/fragment_transaction.xml" value="0.25" />
@@ -21,6 +22,7 @@
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_chip_currency.xml" value="0.2359375" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_currency.xml" value="0.2" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_currency_plus.xml" value="0.4" />
+        <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_divider.xml" value="0.23489583333333333" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_dropdown.xml" value="0.25" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_dropdown_text.xml" value="0.2359375" />
         <entry key="..\:/Users/79215/AndroidStudioProjects/Currencywallet/app/src/main/res/layout/item_history_date.xml" value="0.25" />

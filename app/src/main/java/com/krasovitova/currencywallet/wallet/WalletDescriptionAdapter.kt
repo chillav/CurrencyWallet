@@ -22,6 +22,13 @@ class WalletDescriptionAdapter :
 
                 WalletDescriptionViewHolder.Transaction(view)
             }
+
+            R.layout.item_divider -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_divider, parent, false)
+
+                WalletDescriptionViewHolder.Divider(view)
+            }
             else -> throw IllegalArgumentException("Invalid ViewType Provided")
         }
     }
@@ -37,6 +44,7 @@ class WalletDescriptionAdapter :
                 holder.date.text = item.date
                 holder.sum.text = item.sum
             }
+            is WalletDescriptionViewHolder.Divider -> Unit
         }
     }
 
@@ -46,6 +54,7 @@ class WalletDescriptionAdapter :
         return when (currentList[position]) {
             is WalletDescriptionItems.Title -> R.layout.item_history_date
             is WalletDescriptionItems.Transaction -> R.layout.item_history_transaction
+            is WalletDescriptionItems.Divider -> R.layout.item_divider
         }
     }
 }

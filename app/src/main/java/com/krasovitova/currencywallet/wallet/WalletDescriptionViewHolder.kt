@@ -14,4 +14,6 @@ sealed class WalletDescriptionViewHolder(view: View) : RecyclerView.ViewHolder(v
     class Transaction(view: View) : WalletDescriptionViewHolder(view) {
         val transaction: TextView = view.findViewById(R.id.text_transaction)
     }
+
+    class Divider(view: View) : WalletDescriptionViewHolder(view)
 }

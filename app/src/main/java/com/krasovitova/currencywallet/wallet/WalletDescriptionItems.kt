@@ -10,4 +10,6 @@ sealed class WalletDescriptionItems {
         val id: Int,
         val transactionName: String
     ) : WalletDescriptionItems()
+
+    object Divider : WalletDescriptionItems()
 }

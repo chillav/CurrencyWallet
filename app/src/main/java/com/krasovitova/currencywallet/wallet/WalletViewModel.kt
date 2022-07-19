@@ -69,13 +69,18 @@ class WalletViewModel @Inject constructor(
                 list.add(
                     WalletDescriptionItems.Transaction(
                         id = index,
-                        transactionName = "${transactionUi.sum} / ${transactionUi.currency} / ${transactionUi.date}"
+                        transactionName = "${transactionUi.sum}  ${transactionUi.currency}"
                     )
                 )
             }
 
+            list.add(
+                WalletDescriptionItems.Divider
+            )
+
             list
         }.flatten()
+
     }
 
     companion object {

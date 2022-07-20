@@ -2,8 +2,10 @@ package com.krasovitova.currencywallet.wallet
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ListAdapter
 import com.krasovitova.currencywallet.R
+import com.krasovitova.currencywallet.transaction.TransactionType
 
 class WalletDescriptionAdapter :
     ListAdapter<WalletDescriptionItems, WalletDescriptionViewHolder>(WalletDescriptionDiffUtil()) {
@@ -37,7 +39,20 @@ class WalletDescriptionAdapter :
         when (holder) {
             is WalletDescriptionViewHolder.Transaction -> {
                 val item = currentList[position] as WalletDescriptionItems.Transaction
+                val (iconResId, colorResId) = when (item.type) {
+                    TransactionType.INCOME -> {
+                        R.drawable.ic_income to R.color.green
+                    }
+                    TransactionType.EXPENDITURE -> {
+                        R.drawable.ic_expendiiture to R.color.red
+                    }
+                }
+                val iconDrawable =
+                    AppCompatResources.getDrawable(holder.itemView.context, iconResId)
+                val iconColor = holder.itemView.context.getColor(colorResId)
                 holder.transaction.text = item.transactionName
+                holder.icon.setImageDrawable(iconDrawable)
+                holder.icon.setColorFilter(iconColor)
             }
             is WalletDescriptionViewHolder.Title -> {
                 val item = currentList[position] as WalletDescriptionItems.Title

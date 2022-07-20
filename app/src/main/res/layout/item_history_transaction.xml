@@ -7,13 +7,13 @@
 
     <ImageView
         android:id="@+id/image_transaction"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_minus"
+        tools:src="@drawable/ic_expendiiture"
         tools:tint="@color/red" />
 
     <TextView

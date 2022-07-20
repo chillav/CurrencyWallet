@@ -7,6 +7,7 @@ import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.data.CurrencyRepository
 import com.krasovitova.currencywallet.data.TransactionRepository
 import com.krasovitova.currencywallet.transaction.TransactionType
+import com.krasovitova.currencywallet.transaction.TransactionUi
 import com.krasovitova.currencywallet.utils.sum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -52,17 +53,15 @@ class WalletViewModel @Inject constructor(
             it.date
         }.map { (date, transactions) ->
             val list = mutableListOf<WalletDescriptionItems>()
-
-            val sum = transactions.mapNotNull {
-                if (it.sum.isNotBlank()) {
-                    BigDecimal(it.sum)
-                } else null
-            }.sum().toString()
+            val (incomes, expends) = transactions.partition {
+                it.type == TransactionType.INCOME.title
+            }
+            val sum = incomes.sum() - expends.sum()
 
             list.add(
                 WalletDescriptionItems.Title(
                     date = date,
-                    sum = sum
+                    sum = sum.toString()
                 )
             )
 
@@ -70,7 +69,7 @@ class WalletViewModel @Inject constructor(
                 list.add(
                     WalletDescriptionItems.Transaction(
                         id = index,
-                        transactionName = "${transactionUi.sum}  ${transactionUi.currency}",
+                        transactionName = "${transactionUi.sum} ${transactionUi.currency}",
                         type = TransactionType.getTypeByTitle(transactionUi.type)
                     )
                 )
@@ -83,6 +82,14 @@ class WalletViewModel @Inject constructor(
             list
         }.flatten()
 
+    }
+
+    fun List<TransactionUi>.sum(): BigDecimal {
+        return this.mapNotNull {
+            if (it.sum.isNotBlank()) {
+                BigDecimal(it.sum)
+            } else null
+        }.sum()
     }
 
     companion object {

@@ -43,10 +43,11 @@ class WalletDescriptionAdapter :
                     TransactionType.INCOME -> {
                         R.drawable.ic_income to R.color.green
                     }
-                    TransactionType.EXPENDITURE -> {
+                    TransactionType.EXPEND -> {
                         R.drawable.ic_expendiiture to R.color.red
                     }
                 }
+
                 val iconDrawable =
                     AppCompatResources.getDrawable(holder.itemView.context, iconResId)
                 val iconColor = holder.itemView.context.getColor(colorResId)

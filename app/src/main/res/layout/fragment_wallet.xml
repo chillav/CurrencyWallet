@@ -12,7 +12,9 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:background="@color/pale_blue">
 
         <TextView
             android:id="@+id/text_limit"
@@ -22,8 +24,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/remaining_for_today"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text_day"
@@ -33,8 +34,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/remaining_day"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text_wallet"
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/wallet"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -53,7 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/pale_blue"
+        android:background="@color/white"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,24 +62,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linear_layout"
         tools:itemCount="1"
         tools:listitem="@layout/item_chip_currency" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recycler_currencies" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/blue"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_currencies"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_transactions"

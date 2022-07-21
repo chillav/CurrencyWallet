@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface TransactionDao {
-    @Query("SELECT * from TRANSACTION_TABLE ")
+    @Query("SELECT * from TRANSACTION_TABLE ORDER BY DATE DESC")
     suspend fun getTransactions(): List<TransactionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

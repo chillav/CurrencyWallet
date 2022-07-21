@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import com.krasovitova.currencywallet.R
 import com.krasovitova.currencywallet.transaction.TransactionType
 
-class WalletDescriptionAdapter :
-    ListAdapter<WalletDescriptionItems, WalletDescriptionViewHolder>(WalletDescriptionDiffUtil()) {
+class WalletAdapter(
+    private val onTransactionClick: (WalletDescriptionItems.Transaction) -> Unit
+) : ListAdapter<WalletDescriptionItems, WalletDescriptionViewHolder>(WalletDescriptionDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletDescriptionViewHolder {
         return when (viewType) {
@@ -44,16 +45,22 @@ class WalletDescriptionAdapter :
                         R.drawable.ic_income to R.color.green
                     }
                     TransactionType.EXPEND -> {
-                        R.drawable.ic_expendiiture to R.color.red
+                        R.drawable.ic_expend to R.color.red
                     }
                 }
 
                 val iconDrawable =
                     AppCompatResources.getDrawable(holder.itemView.context, iconResId)
-                val iconColor = holder.itemView.context.getColor(colorResId)
+                val transactionColor = holder.itemView.context.getColor(colorResId)
+
                 holder.transaction.text = item.transactionName
                 holder.icon.setImageDrawable(iconDrawable)
-                holder.icon.setColorFilter(iconColor)
+                holder.icon.setColorFilter(transactionColor)
+                holder.transaction.setTextColor(transactionColor)
+
+                holder.itemView.setOnClickListener {
+                    onTransactionClick.invoke(item)
+                }
             }
             is WalletDescriptionViewHolder.Title -> {
                 val item = currentList[position] as WalletDescriptionItems.Title

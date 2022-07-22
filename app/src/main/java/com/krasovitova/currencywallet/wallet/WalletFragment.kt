@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.krasovitova.currencywallet.R
 import com.krasovitova.currencywallet.currency.CurrenciesFragment
@@ -34,7 +35,18 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
             }
         }
 
-        val adapterTransactions = WalletDescriptionAdapter()
+        val adapterTransactions = WalletAdapter {
+            val items = arrayOf("Редактировать", "Удалить")//TODO вынести в enum
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.setting))
+                .setItems(items) { dialog, which ->
+                    // Respond to item chosen
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+
+                }
+                .show()
+        }
 
         recyclerCurrencies.adapter = adapterCurrency
         recyclerTransactions.adapter = adapterTransactions
@@ -50,6 +62,7 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
         val addTransactionFab = view.findViewById<FloatingActionButton>(R.id.fab_add_transaction)
 
         addTransactionFab.setOnClickListener {
+
             activity?.supportFragmentManager?.commit {
                 setReorderingAllowed(true)
                 replace(R.id.fragment_container, TransactionFragment()).addToBackStack(null)

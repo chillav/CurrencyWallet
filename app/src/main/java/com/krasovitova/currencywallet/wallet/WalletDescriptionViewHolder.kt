@@ -1,6 +1,7 @@
 package com.krasovitova.currencywallet.wallet
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.krasovitova.currencywallet.R
@@ -13,5 +14,8 @@ sealed class WalletDescriptionViewHolder(view: View) : RecyclerView.ViewHolder(v
 
     class Transaction(view: View) : WalletDescriptionViewHolder(view) {
         val transaction: TextView = view.findViewById(R.id.text_transaction)
+        val icon: ImageView = view.findViewById(R.id.image_transaction)
     }
+
+    class Divider(view: View) : WalletDescriptionViewHolder(view)
 }

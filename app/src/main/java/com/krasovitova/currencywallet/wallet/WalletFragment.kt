@@ -2,6 +2,8 @@ package com.krasovitova.currencywallet.wallet
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -68,6 +70,11 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
                 replace(R.id.fragment_container, TransactionFragment()).addToBackStack(null)
             }
         }
+
+        view.findViewById<ImageView>(R.id.image_burger).setOnClickListener {
+            activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.open()
+        }
+
         viewModel.initState()
     }
 }

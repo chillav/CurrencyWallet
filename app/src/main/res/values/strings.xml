@@ -15,4 +15,7 @@
     <string name="wallet">Кошелек:</string>
     <string name="cancel">Отмена</string>
     <string name="setting">Настройка</string>
+    <string name="wallet_currency">WALLET CURRENCY</string>
+    <string name="name_user">Имя пользователя</string>
+    <string name="email_or_wallet">Почта или кошелек</string>
 </resources>

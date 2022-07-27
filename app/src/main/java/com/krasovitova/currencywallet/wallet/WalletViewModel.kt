@@ -81,7 +81,6 @@ class WalletViewModel @Inject constructor(
 
             list
         }.flatten()
-
     }
 
     fun List<TransactionUi>.sum(): BigDecimal {

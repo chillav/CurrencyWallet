@@ -14,6 +14,7 @@ import com.krasovitova.currencywallet.R
 import com.krasovitova.currencywallet.currency.CurrenciesFragment
 import com.krasovitova.currencywallet.currency.CurrencyChipAdapter
 import com.krasovitova.currencywallet.transaction.TransactionFragment
+import com.krasovitova.currencywallet.transaction.TransactionMenu
 import com.krasovitova.currencywallet.wallet.WalletViewModel.Companion.ADD_CURRENCY_TAB_ID
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,11 +39,11 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
         }
 
         val adapterTransactions = WalletAdapter {
-            val items = arrayOf("Редактировать", "Удалить")//TODO вынести в enum
+            val items = TransactionMenu.titles().toTypedArray()
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.setting))
                 .setItems(items) { dialog, which ->
-                    // Respond to item chosen
+
                 }
                 .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
 

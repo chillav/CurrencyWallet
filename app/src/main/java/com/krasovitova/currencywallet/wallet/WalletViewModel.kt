@@ -24,7 +24,7 @@ class WalletViewModel @Inject constructor(
     val transactions = MutableLiveData<List<WalletDescriptionItems>>()
     val currencies = MutableLiveData<List<CurrencyUi>>()
 
-    fun initState() {
+    fun initWallet() {
         viewModelScope.launch(Dispatchers.IO) {
             transactions.postValue(getTransactionsHistory())
             currencies.postValue(getCurrencies())
@@ -35,9 +35,6 @@ class WalletViewModel @Inject constructor(
         return getUserCurrencies() + getAddingCurrencyTab()
     }
 
-    /**
-     * Возвращает список валют, которые выбрал пользователь
-     */
     private suspend fun getUserCurrencies(): List<CurrencyUi> {
         return currencyRepository.getUserCurrencies()
     }
@@ -93,7 +90,7 @@ class WalletViewModel @Inject constructor(
         }.flatten()
     }
 
-    fun List<TransactionUi>.sum(): BigDecimal {
+    private fun List<TransactionUi>.sum(): BigDecimal {
         return this.mapNotNull {
             if (it.sum.isNotBlank()) {
                 BigDecimal(it.sum)

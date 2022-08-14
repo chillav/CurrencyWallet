@@ -51,9 +51,16 @@ class CurrencyViewModel @Inject constructor(
             currencies.value
         } else {
             currencies.value?.filter {
-                it.description.lowercase(Locale.getDefault())
-                    .contains(text.lowercase(Locale.getDefault()))
+                it.description.containsCurrency(text)
             }.orEmpty()
         }
+    }
+
+    private fun String.containsCurrency(text: String): Boolean {
+        return this.lowercase(
+            Locale.getDefault()
+        ).contains(
+            text.lowercase(Locale.getDefault())
+        )
     }
 }

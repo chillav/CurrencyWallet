@@ -6,9 +6,12 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -16,7 +19,10 @@ import com.krasovitova.currencywallet.Constants.DATE_FORMAT
 import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,10 +39,15 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sumView = view.findViewById<TextInputEditText>(R.id.text_input_sum)
+        val sumView = view.findViewById<TextInputEditText>(R.id.text_input_sum).apply {
+            saveInto(viewModel.sumState)
+        }
+
         val currencyView = view.findViewById<AutoCompleteTextView>(
             R.id.auto_complete_text_currency
-        )
+        ).apply {
+            saveInto(viewModel.currencyState)
+        }
 
         viewModel.abbreviationsCurrencies.observe(viewLifecycleOwner) {
             val adapterCurrencyMenu = ArrayAdapter(
@@ -57,6 +68,7 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
             R.id.auto_complete_text_transaction_type
         ).apply {
             setAdapter(adapterTransactionTypeMenu)
+            saveInto(viewModel.typeState)
         }
 
         val calendar = Calendar.getInstance()
@@ -67,7 +79,11 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
         val dateTransactionAreaView =
             view.findViewById<View>(R.id.transaction_date_click_area)
 
-        val transactionDateView = view.findViewById<TextInputEditText>(R.id.text_transaction_date)
+        val transactionDateView = view.findViewById<TextInputEditText>(
+            R.id.text_transaction_date
+        ).apply {
+            saveInto(viewModel.dateState)
+        }
 
         dateTransactionAreaView.setOnClickListener {
             DatePickerDialog(
@@ -86,32 +102,28 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
         val buttonTransaction = view.findViewById<Button>(R.id.button_add_transaction)
 
         buttonTransaction.setOnClickListener {
-            val currency = currencyView.text.toString()
-            val type = transactionTypeView.text.toString()
-            val date = transactionDateView.text.toString()
-            val sum = sumView.text.toString()
-
-            viewModel.saveTransaction(
-                transactionUi = TransactionUi(
-                    sum = sum,
-                    currency = currency,
-                    date = date,
-                    type = type
-                )
-            )
+            viewModel.saveTransaction()
         }
 
         handleSideEffects()
 
         transactionIdArg?.let {
-            viewModel.fetchTransaction(it)
-        }
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.fetchTransaction(it)
 
-        viewModel.cachedTransaction.observe(viewLifecycleOwner) {
-            currencyView.setText(it.currency, false)
-            transactionTypeView.setText(it.type, false)
-            transactionDateView.setText(it.date)
-            sumView.setText(it.sum)
+                withContext(Dispatchers.Main) {
+                    currencyView.setText(viewModel.currencyState.value, false)
+                    transactionTypeView.setText(viewModel.typeState.value, false)
+                    transactionDateView.setText(viewModel.dateState.value)
+                    sumView.setText(viewModel.sumState.value)
+                }
+            }
+        }
+    }
+
+    private fun TextView.saveInto(livedata: MutableLiveData<String>) {
+        addTextChangedListener {
+            livedata.postValue(it.toString())
         }
     }
 

@@ -19,9 +19,14 @@ class TransactionViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
     private val currencies = MutableLiveData<List<CurrencyUi>>()
-    val cachedTransaction = MutableLiveData<TransactionUi>()
+    private val idState = MutableLiveData<Int>()
+
     val transactionTypes = TransactionType.titles()
     val sideEffect = Channel<TransactionScreenSideEffects>()
+    val sumState = MutableLiveData<String>()
+    val typeState = MutableLiveData<String>()
+    val dateState = MutableLiveData<String>()
+    val currencyState = MutableLiveData<String>()
 
     val abbreviationsCurrencies by lazy {
         currencies.map { list ->
@@ -39,13 +44,17 @@ class TransactionViewModel @Inject constructor(
         return currencyRepository.getUserCurrencies()
     }
 
-    fun saveTransaction(transactionUi: TransactionUi) {
+    fun saveTransaction() {
         viewModelScope.launch(Dispatchers.IO) {
-            val errors = getTransactionErrors(transactionUi)
+            val errors = getTransactionErrors()
 
             if (errors.isEmpty()) {
-                val transactionForSave = transactionUi.copy(
-                    id = cachedTransaction.value?.id
+                val transactionForSave = TransactionUi(
+                    id = idState.value,
+                    sum = sumState.value.orEmpty(),
+                    currency = currencyState.value.orEmpty(),
+                    date = dateState.value.orEmpty(),
+                    type = typeState.value.orEmpty()
                 )
                 transactionRepository.saveTransaction(transactionForSave)
                 sideEffect.send(TransactionScreenSideEffects.NavigateBack)
@@ -57,28 +66,34 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-    private fun getTransactionErrors(transaction: TransactionUi): List<SaveTransactionError> {
+    private fun getTransactionErrors(): List<SaveTransactionError> {
         val errors = mutableListOf<SaveTransactionError>()
 
-        if (transaction.sum.isBlank()) {
+        if (sumState.value.isNullOrBlank()) {
             errors.add(SaveTransactionError.EMPTY_SUM)
         }
-        if (transaction.date.isBlank()) {
+        if (dateState.value.isNullOrBlank()) {
             errors.add(SaveTransactionError.EMPTY_DATE)
         }
-        if (transaction.currency.isBlank()) {
+        if (currencyState.value.isNullOrBlank()) {
             errors.add(SaveTransactionError.EMPTY_CURRENCY)
         }
-        if (transaction.type.isBlank()) {
+        if (typeState.value.isNullOrBlank()) {
             errors.add(SaveTransactionError.EMPTY_TYPE)
         }
         return errors
     }
 
-    fun fetchTransaction(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = transactionRepository.getTransactionById(id)
-            cachedTransaction.postValue(result)
+    suspend fun fetchTransaction(id: Int) {
+        val result = transactionRepository.getTransactionById(id)
+        with(result) {
+            this.id?.let {
+                idState.postValue(it)
+            }
+            sumState.postValue(sum)
+            typeState.postValue(type)
+            dateState.postValue(date)
+            currencyState.postValue(currency)
         }
     }
 }

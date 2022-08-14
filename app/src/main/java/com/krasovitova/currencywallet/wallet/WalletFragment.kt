@@ -86,7 +86,7 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
             activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.open()
         }
 
-        viewModel.initState()
+        viewModel.initWallet()
     }
 
     private fun openTransactionFragment(args: Bundle? = null) {

@@ -1,35 +1,43 @@
 package com.krasovitova.currencywallet.wallet
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
 import com.krasovitova.currencywallet.currency.CurrenciesFragment
 import com.krasovitova.currencywallet.currency.CurrencyChipAdapter
+import com.krasovitova.currencywallet.databinding.FragmentWalletBinding
 import com.krasovitova.currencywallet.transaction.TransactionFragment
 import com.krasovitova.currencywallet.transaction.TransactionMenu
 import com.krasovitova.currencywallet.wallet.WalletViewModel.Companion.ADD_CURRENCY_TAB_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WalletFragment : Fragment(R.layout.fragment_wallet) {
+class WalletFragment : Fragment() {
 
+    private var _binding: FragmentWalletBinding? = null
     private val viewModel: WalletViewModel by viewModels()
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWalletBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val recyclerCurrencies = view.findViewById<RecyclerView>(R.id.recycler_currencies)
-        val recyclerTransactions = view.findViewById<RecyclerView>(R.id.recycler_transactions)
 
         val adapterCurrency = CurrencyChipAdapter { currency ->
             if (currency.id == ADD_CURRENCY_TAB_ID) {
@@ -65,8 +73,8 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
                 .show()
         }
 
-        recyclerCurrencies.adapter = adapterCurrency
-        recyclerTransactions.adapter = adapterTransactions
+        binding.recyclerCurrencies.adapter = adapterCurrency
+        binding.recyclerTransactions.adapter = adapterTransactions
 
         viewModel.currencies.observe(viewLifecycleOwner) { currencies ->
             adapterCurrency.submitList(currencies)
@@ -76,17 +84,20 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
             adapterTransactions.submitList(transactions)
         }
 
-        val addTransactionFab = view.findViewById<FloatingActionButton>(R.id.fab_add_transaction)
-
-        addTransactionFab.setOnClickListener {
+        binding.fabAddTransaction.setOnClickListener {
             openTransactionFragment()
         }
 
-        view.findViewById<ImageView>(R.id.image_burger).setOnClickListener {
+        binding.imageBurger.setOnClickListener {
             activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.open()
         }
 
         viewModel.initWallet()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun openTransactionFragment(args: Bundle? = null) {

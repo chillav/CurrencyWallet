@@ -19,8 +19,8 @@ class TransactionViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
     private val currencies = MutableLiveData<List<CurrencyUi>>()
+    val cachedTransaction = MutableLiveData<TransactionUi>()
     val transactionTypes = TransactionType.titles()
-
     val sideEffect = Channel<TransactionScreenSideEffects>()
 
     val abbreviationsCurrencies by lazy {
@@ -44,7 +44,10 @@ class TransactionViewModel @Inject constructor(
             val errors = getTransactionErrors(transactionUi)
 
             if (errors.isEmpty()) {
-                transactionRepository.saveTransaction(transactionUi)
+                val transactionForSave = transactionUi.copy(
+                    id = cachedTransaction.value?.id
+                )
+                transactionRepository.saveTransaction(transactionForSave)
                 sideEffect.send(TransactionScreenSideEffects.NavigateBack)
             } else {
                 sideEffect.send(
@@ -70,6 +73,13 @@ class TransactionViewModel @Inject constructor(
             errors.add(SaveTransactionError.EMPTY_TYPE)
         }
         return errors
+    }
+
+    fun fetchTransaction(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = transactionRepository.getTransactionById(id)
+            cachedTransaction.postValue(result)
+        }
     }
 }
 

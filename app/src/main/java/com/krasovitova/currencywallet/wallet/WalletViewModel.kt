@@ -12,6 +12,7 @@ import com.krasovitova.currencywallet.utils.sum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -66,9 +67,18 @@ class WalletViewModel @Inject constructor(
             )
 
             transactions.forEachIndexed { index, transactionUi ->
+                if (transactionUi.id == null) {
+                    Timber.e(
+                        """Transaction id is null. 
+                        |This transaction wasn't added in wallet transaction list: 
+                        |$transactionUi""".trimMargin()
+                    )
+                    return@forEachIndexed
+                }
+
                 list.add(
                     WalletDescriptionItems.Transaction(
-                        id = index,
+                        id = transactionUi.id,
                         transactionName = "${transactionUi.sum} ${transactionUi.currency}",
                         type = TransactionType.getTypeByTitle(transactionUi.type)
                     )
@@ -81,7 +91,6 @@ class WalletViewModel @Inject constructor(
 
             list
         }.flatten()
-
     }
 
     fun List<TransactionUi>.sum(): BigDecimal {

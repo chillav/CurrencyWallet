@@ -18,4 +18,8 @@
     <string name="wallet_currency">WALLET CURRENCY</string>
     <string name="name_user">Имя пользователя</string>
     <string name="email_or_wallet">Почта или кошелек</string>
+    <string name="empty_sum_error">Введите сумму</string>
+    <string name="empty_currency_error">Выберите валюту</string>
+    <string name="empty_date_error">Выберите дату</string>
+    <string name="empty_type_transactions_error">Выберите тип транзакции</string>
 </resources>

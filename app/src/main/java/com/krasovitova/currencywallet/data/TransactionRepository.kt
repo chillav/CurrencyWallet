@@ -17,6 +17,7 @@ class TransactionRepository @Inject constructor(
 
     suspend fun saveTransaction(transactionUi: TransactionUi) {
         val entity = TransactionEntity(
+            id = transactionUi.id,
             sum = transactionUi.sum,
             currency = transactionUi.currency,
             date = parseDate(date = transactionUi.date),
@@ -46,18 +47,21 @@ class TransactionRepository @Inject constructor(
 
     }
 
-    fun List<TransactionEntity>.mapToUi(): List<TransactionUi> {
-        return this.map {
-            val date = Date().apply { time = it.date }
-            TransactionUi(
-                id = it.id,
-                sum = it.sum,
-                currency = it.currency,
-                date = dateFormat.format(date),
-                type = it.type
-            )
-        }
+    private fun List<TransactionEntity>.mapToUi(): List<TransactionUi> {
+        return this.map { it.mapToUi() }
+    }
+
+    private fun TransactionEntity.mapToUi(): TransactionUi {
+        return TransactionUi(
+            id = id,
+            sum = sum,
+            currency = currency,
+            date = dateFormat.format(Date(date)),
+            type = type,
+        )
+    }
+
+    suspend fun getTransactionById(id: Int): TransactionUi {
+        return transactionDao.getTransactionById(id).mapToUi()
     }
 }
-
-

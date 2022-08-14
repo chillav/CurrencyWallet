@@ -2,19 +2,17 @@ package com.krasovitova.currencywallet.transaction
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.krasovitova.currencywallet.Constants.DATE_FORMAT
 import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
+import com.krasovitova.currencywallet.base.BaseFragment
 import com.krasovitova.currencywallet.databinding.FragmentTransactionBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -25,24 +23,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class TransactionFragment : Fragment(R.layout.fragment_transaction) {
+class TransactionFragment : BaseFragment<FragmentTransactionBinding>(
+    FragmentTransactionBinding::inflate
+) {
     private val viewModel: TransactionViewModel by viewModels()
-
     private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
-    private var _binding: FragmentTransactionBinding? = null
-    private val binding get() = _binding!!
 
     private val transactionIdArg by lazy {
         arguments?.getInt(TRANSACTION_ID_ARG)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentTransactionBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -124,11 +112,6 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun TextView.saveInto(livedata: MutableLiveData<String>) {

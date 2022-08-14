@@ -3,6 +3,7 @@ package com.krasovitova.currencywallet.wallet
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
 import com.krasovitova.currencywallet.currency.CurrenciesFragment
 import com.krasovitova.currencywallet.currency.CurrencyChipAdapter
@@ -40,10 +42,22 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
 
         val adapterTransactions = WalletAdapter {
             val items = TransactionMenu.titles().toTypedArray()
+
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.setting))
-                .setItems(items) { dialog, which ->
+                .setItems(items) { _, index ->
+                    val selectedItem = TransactionMenu.getMenuItemByTitle(items[index])
 
+                    when (selectedItem) {
+                        TransactionMenu.EDIT -> {
+                            openTransactionFragment(
+                                args = bundleOf(TRANSACTION_ID_ARG to it.id)
+                            )
+                        }
+                        TransactionMenu.DELETE -> {
+                            // TODO handle delete click
+                        }
+                    }
                 }
                 .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
 
@@ -65,11 +79,7 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
         val addTransactionFab = view.findViewById<FloatingActionButton>(R.id.fab_add_transaction)
 
         addTransactionFab.setOnClickListener {
-
-            activity?.supportFragmentManager?.commit {
-                setReorderingAllowed(true)
-                replace(R.id.fragment_container, TransactionFragment()).addToBackStack(null)
-            }
+            openTransactionFragment()
         }
 
         view.findViewById<ImageView>(R.id.image_burger).setOnClickListener {
@@ -77,5 +87,15 @@ class WalletFragment : Fragment(R.layout.fragment_wallet) {
         }
 
         viewModel.initState()
+    }
+
+    private fun openTransactionFragment(args: Bundle? = null) {
+        activity?.supportFragmentManager?.commit {
+            setReorderingAllowed(true)
+            val fragment = TransactionFragment().apply {
+                arguments = args
+            }
+            replace(R.id.fragment_container, fragment).addToBackStack(null)
+        }
     }
 }

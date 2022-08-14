@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.krasovitova.currencywallet.Constants.DATE_FORMAT
+import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.consumeEach
@@ -24,6 +25,10 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
     private val viewModel: TransactionViewModel by viewModels()
 
     private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+
+    private val transactionIdArg by lazy {
+        arguments?.getInt(TRANSACTION_ID_ARG)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,38 +102,50 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
         }
 
         handleSideEffects()
+
+        transactionIdArg?.let {
+            viewModel.fetchTransaction(it)
+        }
+
+        viewModel.cachedTransaction.observe(viewLifecycleOwner) {
+            currencyView.setText(it.currency, false)
+            transactionTypeView.setText(it.type, false)
+            transactionDateView.setText(it.date)
+            sumView.setText(it.sum)
+        }
     }
 
-    private fun handleSideEffects() {
-        lifecycleScope.launchWhenResumed {
-            viewModel.sideEffect.consumeEach { effect ->
-                when (effect) {
-                    is TransactionScreenSideEffects.ValidationFailed -> {
-                        effect.errors.forEach { error ->
-                            when (error) {
-                                // TODO разбить на функции и вынести строки
-                                SaveTransactionError.EMPTY_SUM -> {
-                                    view?.findViewById<TextInputLayout>(R.id.text_count)?.error =
-                                        "Введите сумму"
-                                }
-                                SaveTransactionError.EMPTY_CURRENCY -> {
-                                    view?.findViewById<TextInputLayout>(R.id.text_input_currency)?.error =
-                                        "Выберите валюту"
-                                }
-                                SaveTransactionError.EMPTY_DATE -> {
-                                    view?.findViewById<TextInputLayout>(R.id.input_layout_transaction_date)?.error =
-                                        "Выберите дату"
-                                }
-                                SaveTransactionError.EMPTY_TYPE -> {
-                                    view?.findViewById<TextInputLayout>(R.id.text_input_transaction_type)?.error =
-                                        "Выберите тип транзакции"
-                                }
-                            }
-                        }
-                    }
-                    TransactionScreenSideEffects.NavigateBack -> {
-                        activity?.onBackPressed()
-                    }
+    private fun handleSideEffects() = lifecycleScope.launchWhenResumed {
+        viewModel.sideEffect.consumeEach { effect ->
+            when (effect) {
+                is TransactionScreenSideEffects.ValidationFailed -> {
+                    handleFailedValidation(effect)
+                }
+                is TransactionScreenSideEffects.NavigateBack -> {
+                    activity?.onBackPressed()
+                }
+            }
+        }
+    }
+
+    private fun handleFailedValidation(effect: TransactionScreenSideEffects.ValidationFailed) {
+        effect.errors.forEach { error ->
+            when (error) {
+                SaveTransactionError.EMPTY_SUM -> {
+                    view?.findViewById<TextInputLayout>(R.id.text_count)?.error =
+                        getString(R.string.empty_sum_error)
+                }
+                SaveTransactionError.EMPTY_CURRENCY -> {
+                    view?.findViewById<TextInputLayout>(R.id.text_input_currency)?.error =
+                        getString(R.string.empty_currency_error)
+                }
+                SaveTransactionError.EMPTY_DATE -> {
+                    view?.findViewById<TextInputLayout>(R.id.input_layout_transaction_date)?.error =
+                        getString(R.string.empty_date_error)
+                }
+                SaveTransactionError.EMPTY_TYPE -> {
+                    view?.findViewById<TextInputLayout>(R.id.text_input_transaction_type)?.error =
+                        getString(R.string.empty_type_transactions_error)
                 }
             }
         }

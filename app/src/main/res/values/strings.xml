@@ -22,4 +22,5 @@
     <string name="empty_currency_error">Выберите валюту</string>
     <string name="empty_date_error">Выберите дату</string>
     <string name="empty_type_transactions_error">Выберите тип транзакции</string>
+    <string name="graphs">Графики</string>
 </resources>

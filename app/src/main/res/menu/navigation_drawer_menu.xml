@@ -7,7 +7,13 @@
             android:id="@+id/item_graph"
             android:checked="true"
             android:icon="@drawable/ic_graph"
-            android:title="Графики" />
+            android:title="@string/graphs" />
+
+        <item
+            android:id="@+id/item_set"
+            android:checked="true"
+            android:icon="@drawable/ic_setting"
+            android:title="@string/setting" />
 
     </group>
 

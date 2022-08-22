@@ -2,14 +2,14 @@ package com.krasovitova.currencywallet.transaction
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.data.CurrencyRepository
 import com.krasovitova.currencywallet.data.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,31 +18,15 @@ class TransactionViewModel @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
-    private val currencies = MutableLiveData<List<CurrencyUi>>()
     private val idState = MutableLiveData<Int>()
 
+    val currencies: Flow<List<String>> = fetchCurrencies()
     val transactionTypes = TransactionType.titles()
     val sideEffect = Channel<TransactionScreenSideEffects>()
     val sumState = MutableLiveData<String>()
     val typeState = MutableLiveData<String>()
     val dateState = MutableLiveData<String>()
     val currencyState = MutableLiveData<String>()
-
-    val abbreviationsCurrencies by lazy {
-        currencies.map { list ->
-            list.map { it.abbreviation }
-        }
-    }
-
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            currencies.postValue(getCurrencies())
-        }
-    }
-
-    private suspend fun getCurrencies(): List<CurrencyUi> {
-        return currencyRepository.getUserCurrencies()
-    }
 
     fun saveTransaction() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -63,6 +47,12 @@ class TransactionViewModel @Inject constructor(
                     TransactionScreenSideEffects.ValidationFailed(errors)
                 )
             }
+        }
+    }
+
+    private fun fetchCurrencies(): Flow<List<String>> {
+        return currencyRepository.getUserCurrencies().map {
+            it.map { it.abbreviation }
         }
     }
 

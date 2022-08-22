@@ -44,13 +44,15 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>(
             saveInto(viewModel.currencyState)
         }
 
-        viewModel.abbreviationsCurrencies.observe(viewLifecycleOwner) {
-            val adapterCurrencyMenu = ArrayAdapter(
-                requireContext(),
-                R.layout.item_dropdown_text,
-                it
-            )
-            binding.autoCompleteTextCurrency.setAdapter(adapterCurrencyMenu)
+        lifecycleScope.launch {
+            viewModel.currencies.collect {
+                val adapterCurrencyMenu = ArrayAdapter(
+                    requireContext(),
+                    R.layout.item_dropdown_text,
+                    it
+                )
+                binding.autoCompleteTextCurrency.setAdapter(adapterCurrencyMenu)
+            }
         }
 
         val adapterTransactionTypeMenu = ArrayAdapter(

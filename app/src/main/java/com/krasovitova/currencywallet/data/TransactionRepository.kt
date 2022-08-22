@@ -4,6 +4,8 @@ import com.krasovitova.currencywallet.Constants.DATE_FORMAT
 import com.krasovitova.currencywallet.data.database.transaction.TransactionDao
 import com.krasovitova.currencywallet.data.database.transaction.TransactionEntity
 import com.krasovitova.currencywallet.transaction.TransactionUi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -42,9 +44,8 @@ class TransactionRepository @Inject constructor(
         }
     }
 
-    suspend fun getTransactions(): List<TransactionUi> {
-        return transactionDao.getTransactions().mapToUi()
-
+    fun getTransactions(): Flow<List<TransactionUi>> {
+        return transactionDao.getTransactions().map { it.mapToUi() }
     }
 
     private fun List<TransactionEntity>.mapToUi(): List<TransactionUi> {

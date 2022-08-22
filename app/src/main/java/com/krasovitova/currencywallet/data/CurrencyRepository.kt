@@ -6,6 +6,8 @@ import com.krasovitova.currencywallet.currency.mapToEntity
 import com.krasovitova.currencywallet.data.database.currency.CurrencyDao
 import com.krasovitova.currencywallet.data.database.currency.CurrencyEntity
 import com.krasovitova.currencywallet.data.database.currency.mapToUi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -51,8 +53,8 @@ class CurrencyRepository @Inject constructor(
         currencyDao.insert(currencyEntity)
     }
 
-    suspend fun getUserCurrencies(): List<CurrencyUi> {
-        return currencyDao.getUserCurrencies().mapToUi()
+    fun getUserCurrencies(): Flow<List<CurrencyUi>> {
+        return currencyDao.getUserCurrencies().map { it.mapToUi() }
     }
 }
 

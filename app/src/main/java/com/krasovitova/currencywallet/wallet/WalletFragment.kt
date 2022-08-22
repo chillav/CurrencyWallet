@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
@@ -16,6 +17,7 @@ import com.krasovitova.currencywallet.transaction.TransactionFragment
 import com.krasovitova.currencywallet.transaction.TransactionMenu
 import com.krasovitova.currencywallet.wallet.WalletViewModel.Companion.ADD_CURRENCY_TAB_ID
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WalletFragment : BaseFragment<FragmentWalletBinding>(
@@ -57,12 +59,16 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(
         binding.recyclerCurrencies.adapter = adapterCurrency
         binding.recyclerTransactions.adapter = adapterTransactions
 
-        viewModel.currencies.observe(viewLifecycleOwner) { currencies ->
-            adapterCurrency.submitList(currencies)
+        lifecycleScope.launch {
+            viewModel.transactions.collect {
+                adapterTransactions.submitList(it)
+            }
         }
 
-        viewModel.transactions.observe(viewLifecycleOwner) { transactions ->
-            adapterTransactions.submitList(transactions)
+        lifecycleScope.launch {
+            viewModel.currencies.collect {
+                adapterCurrency.submitList(it)
+            }
         }
 
         binding.fabAddTransaction.setOnClickListener {
@@ -72,7 +78,5 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(
         binding.imageBurger.setOnClickListener {
             activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.open()
         }
-
-        viewModel.initWallet()
     }
 }

@@ -47,14 +47,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(
                                 args = bundleOf(TRANSACTION_ID_ARG to it.id)
                             )
                         }
-                        TransactionMenu.DELETE -> {
-                            // TODO handle delete click
-                        }
+                        TransactionMenu.DELETE -> viewModel.deleteTransactionById(it.id)
                     }
                 }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
-
-                }
+                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
                 .show()
         }
 

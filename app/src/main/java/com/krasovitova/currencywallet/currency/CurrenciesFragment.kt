@@ -37,8 +37,5 @@ class CurrenciesFragment : BaseFragment<FragmentCurrenciesBinding>(
                 viewModel.filterCurrencies(text.toString())
             }
         )
-        binding.buttonAddCurrency.setOnClickListener {
-            activity?.onBackPressed()
-        }
     }
 }

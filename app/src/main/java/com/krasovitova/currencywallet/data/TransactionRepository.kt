@@ -64,4 +64,8 @@ class TransactionRepository @Inject constructor(
     suspend fun getTransactionById(id: Int): TransactionUi {
         return transactionDao.getTransactionById(id).mapToUi()
     }
+
+    suspend fun deleteTransactionById(id: Int) {
+        return transactionDao.deleteTransactionById(id)
+    }
 }

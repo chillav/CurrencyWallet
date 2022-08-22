@@ -31,6 +31,13 @@ class WalletViewModel @Inject constructor(
         }
     }
 
+    fun deleteTransactionById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionRepository.deleteTransactionById(id)
+            transactions.postValue(getTransactionsHistory())
+        }
+    }
+
     private suspend fun getCurrencies(): List<CurrencyUi> {
         return getUserCurrencies() + getAddingCurrencyTab()
     }

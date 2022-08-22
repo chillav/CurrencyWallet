@@ -15,4 +15,7 @@ interface TransactionDao {
 
     @Query("SELECT * FROM TRANSACTION_TABLE WHERE ID = :id")
     suspend fun getTransactionById(id: Int): TransactionEntity
+
+    @Query("DELETE FROM TRANSACTION_TABLE WHERE id = :id")
+    suspend fun deleteTransactionById(id: Int)
 }

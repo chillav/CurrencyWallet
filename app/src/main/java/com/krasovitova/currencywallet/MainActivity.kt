@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.google.android.material.navigation.NavigationView
+import com.krasovitova.currencywallet.avatar.SelectAvatarFragment
 import com.krasovitova.currencywallet.graph.GraphFragment
 import com.krasovitova.currencywallet.wallet.WalletFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         findViewById<NavigationView>(R.id.navigation_view).setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.item_graph -> replaceFragment(fragment = GraphFragment())
-                R.id.item_set -> Unit
+                R.id.item_set -> replaceFragment(fragment = SelectAvatarFragment())
             }
             findViewById<DrawerLayout>(R.id.drawer_layout).close()
             true

@@ -1,6 +1,7 @@
 package com.krasovitova.currencywallet
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -22,10 +23,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             add<WalletFragment>(R.id.fragment_container)
         }
 
+        findViewById<NavigationView>(R.id.navigation_view)
+            .getHeaderView(0) // TODO create const in companion object
+            .findViewById<ImageView>(R.id.image_setting).setOnClickListener {
+                replaceFragment(fragment = SelectAvatarFragment())
+                findViewById<DrawerLayout>(R.id.drawer_layout).close()
+            }
+
         findViewById<NavigationView>(R.id.navigation_view).setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.item_graph -> replaceFragment(fragment = GraphFragment())
-                R.id.item_set -> replaceFragment(fragment = SelectAvatarFragment())
+                R.id.item_set -> Unit
             }
             findViewById<DrawerLayout>(R.id.drawer_layout).close()
             true

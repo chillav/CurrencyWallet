@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.krasovitova.currencywallet.base.BaseFragment
-import com.krasovitova.currencywallet.databinding.FragmentImagesBinding
+import com.krasovitova.currencywallet.databinding.FragmentSelectAvatarBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SelectAvatarFragment : BaseFragment<FragmentImagesBinding>(
-    FragmentImagesBinding::inflate
+class SelectAvatarFragment : BaseFragment<FragmentSelectAvatarBinding>(
+    FragmentSelectAvatarBinding::inflate
 ) {
 
     private val viewModel: SelectAvatarViewModel by viewModels()
@@ -25,6 +25,7 @@ class SelectAvatarFragment : BaseFragment<FragmentImagesBinding>(
 
         viewModel.images.observe(viewLifecycleOwner) {
             avatarAdapter.submitList(it)
+            binding.progressBar.progressBar.visibility = View.INVISIBLE
         }
 
         binding.toolbar.setNavigationOnClickListener {

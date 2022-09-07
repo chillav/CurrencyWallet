@@ -22,7 +22,7 @@ class AvatarAdapter(
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val image = currentList[position]
-        holder.image.load("https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg") {
+        holder.image.load(image.url) {
             transformations(RoundedCornersTransformation())
         }
 

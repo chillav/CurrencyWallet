@@ -27,9 +27,8 @@ fun ImageModel.mapToUi(): ImageUi? {
     return if (id != null && farm != null && server != null && secret != null) {
         ImageUi(
             id = id,
-            farm = farm,
-            server = server,
-            secret = secret
+            // TODO move to string resources
+            url = "https://farm$farm.staticflickr.com/$server/${id}_$secret.jpg"
         )
     } else null
 }

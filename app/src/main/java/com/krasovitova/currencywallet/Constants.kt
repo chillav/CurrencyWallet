@@ -9,4 +9,6 @@ object Constants {
     const val AVATAR_IMAGE_URL = "avatar_image_url"
     const val AVATAR_CHANGED_RESULT = "avatar_changed_result"
     const val AVATAR_CHANGED_RESULT_ARG = "avatar_changed_result_arg"
+    const val BASE_URL_CURRENCIES = "https://api.exchangerate.host/"
+    const val BASE_URL_IMAGES = "https://www.flickr.com/services/rest/"
 }

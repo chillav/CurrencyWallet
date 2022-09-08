@@ -2,6 +2,8 @@ package com.krasovitova.currencywallet.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.krasovitova.currencywallet.Constants.BASE_URL_CURRENCIES
+import com.krasovitova.currencywallet.Constants.BASE_URL_IMAGES
 import com.krasovitova.currencywallet.api.CurrencyApi
 import com.krasovitova.currencywallet.api.ImageApi
 import dagger.Module
@@ -19,14 +21,14 @@ class AppModule {
 
 
     @Provides
-    fun provideGsonBuilder(): Gson {
+    fun provideGson(): Gson {
         return GsonBuilder()
             .setLenient()
             .create()
     }
 
     @Provides
-    fun provideRetrofit(gson: Gson): Retrofit.Builder {
+    fun provideRetrofitBuilder(gson: Gson): Retrofit.Builder {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -43,7 +45,7 @@ class AppModule {
     @Provides
     fun provideCurrencyApi(retrofitBuilder: Retrofit.Builder): CurrencyApi {
         return retrofitBuilder
-            .baseUrl("https://api.exchangerate.host/")
+            .baseUrl(BASE_URL_CURRENCIES)
             .build()
             .create(CurrencyApi::class.java)
     }
@@ -51,7 +53,7 @@ class AppModule {
     @Provides
     fun provideImageApi(retrofitBuilder: Retrofit.Builder): ImageApi {
         return retrofitBuilder
-            .baseUrl("https://www.flickr.com/services/rest/")
+            .baseUrl(BASE_URL_IMAGES)
             .build()
             .create(ImageApi::class.java)
     }

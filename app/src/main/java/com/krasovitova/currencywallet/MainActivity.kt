@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,9 +37,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val preferences = getSharedPreferences(Constants.SHARED_PREFERENCES, MODE_PRIVATE)
         val avatarImageUrl = preferences.getString(AVATAR_IMAGE_URL, "")
         if (avatarImageUrl.isNullOrBlank().not()) {
-            getAvatarImageView().load(avatarImageUrl) {
-                transformations(CircleCropTransformation())
-            }
+            getAvatarImageUrl()
         }
 
         observeAvatarChanges()
@@ -53,15 +52,21 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
+    private fun getAvatarImageUrl() {
+        val preferences = getSharedPreferences(Constants.SHARED_PREFERENCES, MODE_PRIVATE)
+        val avatarImageUrl = preferences.getString(AVATAR_IMAGE_URL, "")
+        getAvatarImageView().load(avatarImageUrl) {
+            transformations(CircleCropTransformation())
+        }
+    }
+
     private fun observeAvatarChanges() {
         supportFragmentManager.setFragmentResultListener(
             AVATAR_CHANGED_RESULT,
             this
         ) { _, bundle ->
-            bundle.getString(AVATAR_CHANGED_RESULT_ARG)?.let { url ->
-                getAvatarImageView().load(url) {
-                    transformations(CircleCropTransformation())
-                }
+            bundle.getString(AVATAR_CHANGED_RESULT_ARG)?.let {
+                getAvatarImageUrl()
             }
         }
     }

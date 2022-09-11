@@ -36,8 +36,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val preferences = getSharedPreferences(Constants.SHARED_PREFERENCES, MODE_PRIVATE)
         val avatarImageUrl = preferences.getString(AVATAR_IMAGE_URL, "")
-        if (avatarImageUrl.isNullOrBlank().not()) {
-            getAvatarImageUrl()
+
+        if (avatarImageUrl != null && avatarImageUrl.isNotBlank()) {
+            setupAvatar(url = avatarImageUrl)
         }
 
         observeAvatarChanges()
@@ -52,10 +53,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun getAvatarImageUrl() {
-        val preferences = getSharedPreferences(Constants.SHARED_PREFERENCES, MODE_PRIVATE)
-        val avatarImageUrl = preferences.getString(AVATAR_IMAGE_URL, "")
-        getAvatarImageView().load(avatarImageUrl) {
+    private fun setupAvatar(url: String) {
+        getAvatarImageView().load(url) {
             transformations(CircleCropTransformation())
         }
     }
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             this
         ) { _, bundle ->
             bundle.getString(AVATAR_CHANGED_RESULT_ARG)?.let {
-                getAvatarImageUrl()
+                setupAvatar(url = it)
             }
         }
     }

@@ -9,7 +9,7 @@
         android:id="@+id/linear_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/pale_blue"
+        android:background="@color/blue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,32 +19,13 @@
             android:id="@+id/image_burger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/great"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:padding="10dp"
             android:src="@drawable/ic_menu"
+            app:tint="@color/white"
             tools:ignore="contentDescription" />
-
-        <TextView
-            android:id="@+id/text_limit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/remaining_for_today"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text_day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/remaining_day"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text_wallet"
@@ -53,8 +34,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/wallet"
-            android:textSize="16sp"
+            android:text="@string/balance"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -65,8 +47,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="@string/wallet_currency"
-        android:textSize="16sp"
+        android:text="@string/history"
+        android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

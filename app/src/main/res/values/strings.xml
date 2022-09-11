@@ -12,10 +12,10 @@
     <string name="setting_transaction">Настройка транзакции</string>
     <string name="remaining_for_today">Осталось на сегодня:</string>
     <string name="remaining_day">Осталось дней:</string>
-    <string name="wallet">Кошелек:</string>
+    <string name="balance">Баланс:100</string>
     <string name="cancel">Отмена</string>
     <string name="setting">Настройка</string>
-    <string name="wallet_currency">WALLET CURRENCY</string>
+    <string name="history">История</string>
     <string name="name_user">Имя пользователя</string>
     <string name="email_or_wallet">Почта или кошелек</string>
     <string name="empty_sum_error">Введите сумму</string>

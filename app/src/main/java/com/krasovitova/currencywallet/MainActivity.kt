@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.navigation.NavigationView
 import com.krasovitova.currencywallet.Constants.AVATAR_CHANGED_RESULT
 import com.krasovitova.currencywallet.Constants.AVATAR_CHANGED_RESULT_ARG
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,8 +36,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val preferences = getSharedPreferences(Constants.SHARED_PREFERENCES, MODE_PRIVATE)
         val avatarImageUrl = preferences.getString(AVATAR_IMAGE_URL, "")
-        if (avatarImageUrl.isNullOrBlank().not()) {
-            getAvatarImageView().load(avatarImageUrl)
+
+        if (avatarImageUrl != null && avatarImageUrl.isNotBlank()) {
+            setupAvatar(url = avatarImageUrl)
         }
 
         observeAvatarChanges()
@@ -50,13 +53,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
+    private fun setupAvatar(url: String) {
+        getAvatarImageView().load(url) {
+            transformations(CircleCropTransformation())
+        }
+    }
+
     private fun observeAvatarChanges() {
         supportFragmentManager.setFragmentResultListener(
             AVATAR_CHANGED_RESULT,
             this
         ) { _, bundle ->
-            bundle.getString(AVATAR_CHANGED_RESULT_ARG)?.let { url ->
-                getAvatarImageView().load(url)
+            bundle.getString(AVATAR_CHANGED_RESULT_ARG)?.let {
+                setupAvatar(url = it)
             }
         }
     }
@@ -64,7 +73,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun getAvatarImageView(): ImageView {
         return findViewById<NavigationView>(R.id.navigation_view)
             .getHeaderView(DRAWER_HEADER_POSITION)
-            .findViewById(R.id.image_setting)
+            .findViewById(R.id.image_avatar)
     }
 
     private fun replaceFragment(fragment: Fragment) {

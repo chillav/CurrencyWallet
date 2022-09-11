@@ -26,10 +26,10 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/sum"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:errorEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_input_sum"
@@ -47,10 +47,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/currency"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_count"
-        app:errorEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/text_count">
 
         <AutoCompleteTextView
             android:id="@+id/auto_complete_text_currency"
@@ -71,10 +71,10 @@
         android:hint="@string/date"
         app:endIconDrawable="@drawable/ic_calendar"
         app:endIconMode="custom"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_currency"
-        app:errorEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/text_input_currency">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_transaction_date"
@@ -102,10 +102,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/transactions"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_transaction_date"
-        app:errorEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_transaction_date">
 
         <AutoCompleteTextView
             android:id="@+id/auto_complete_text_transaction_type"
@@ -122,8 +122,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/teal_200"
         android:text="@string/adding"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

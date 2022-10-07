@@ -24,4 +24,6 @@
     <string name="empty_type_transactions_error">Выберите тип транзакции</string>
     <string name="graphs">Графики</string>
     <string name="avatar_selection">Выбор аватара</string>
+    <string name="default_notification_channel_id">default_notification_channel</string>
+
 </resources>

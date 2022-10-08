@@ -1,8 +1,13 @@
 package com.krasovitova.currencywallet
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
@@ -51,6 +56,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             findViewById<DrawerLayout>(R.id.drawer_layout).close()
             true
         }
+
+        askNotificationPermission()
     }
 
     private fun setupAvatar(url: String) {
@@ -80,6 +87,28 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace(R.id.fragment_container, fragment).addToBackStack(null)
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        // TODO handle permission result
+    }
+
+    private fun askNotificationPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val isGranted = ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (isGranted) {
+                // TODO handle permission result
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 

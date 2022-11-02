@@ -16,7 +16,6 @@ import com.krasovitova.currencywallet.base.BaseFragment
 import com.krasovitova.currencywallet.databinding.FragmentTransactionBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -123,19 +122,19 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>(
     }
 
     private fun handleSideEffects() = lifecycleScope.launchWhenResumed {
-        viewModel.sideEffect.consumeEach { effect ->
+        viewModel.event.collect { effect ->
             when (effect) {
-                is TransactionScreenSideEffects.ValidationFailed -> {
+                is TransactionScreenEvent.ValidationFailed -> {
                     handleFailedValidation(effect)
                 }
-                is TransactionScreenSideEffects.NavigateBack -> {
+                is TransactionScreenEvent.NavigateBack -> {
                     activity?.onBackPressed()
                 }
             }
         }
     }
 
-    private fun handleFailedValidation(effect: TransactionScreenSideEffects.ValidationFailed) {
+    private fun handleFailedValidation(effect: TransactionScreenEvent.ValidationFailed) {
         effect.errors.forEach { error ->
             when (error) {
                 SaveTransactionError.EMPTY_SUM -> {

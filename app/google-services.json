@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "505530058861",
+    "project_id": "currencywallet-ed3b3",
+    "storage_bucket": "currencywallet-ed3b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505530058861:android:2e3b376ca4b850daacd764",
+        "android_client_info": {
+          "package_name": "com.krasovitova.currencywallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505530058861-hbvstofu1m992o0v498dh68i2od4urrf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTAzGATmNKho3jOk3ajpyxbhHpGCei_Bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505530058861-hbvstofu1m992o0v498dh68i2od4urrf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

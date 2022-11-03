@@ -7,8 +7,9 @@ import com.krasovitova.currencywallet.data.CurrencyRepository
 import com.krasovitova.currencywallet.data.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,10 +20,11 @@ class TransactionViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
     private val idState = MutableLiveData<Int>()
+    private val _event = MutableSharedFlow<TransactionScreenEvent>()
 
+    val event = _event.asSharedFlow()
     val currencies: Flow<List<String>> = fetchCurrencies()
     val transactionTypes = TransactionType.titles()
-    val sideEffect = Channel<TransactionScreenSideEffects>()
     val sumState = MutableLiveData<String>()
     val typeState = MutableLiveData<String>()
     val dateState = MutableLiveData<String>()
@@ -41,10 +43,10 @@ class TransactionViewModel @Inject constructor(
                     type = typeState.value.orEmpty()
                 )
                 transactionRepository.saveTransaction(transactionForSave)
-                sideEffect.send(TransactionScreenSideEffects.NavigateBack)
+                _event.emit(TransactionScreenEvent.NavigateBack)
             } else {
-                sideEffect.send(
-                    TransactionScreenSideEffects.ValidationFailed(errors)
+                _event.emit(
+                    TransactionScreenEvent.ValidationFailed(errors)
                 )
             }
         }

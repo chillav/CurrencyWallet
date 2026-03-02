@@ -1,155 +1,143 @@
 package com.krasovitova.currencywallet.transaction
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.krasovitova.currencywallet.Constants.DATE_FORMAT
 import com.krasovitova.currencywallet.Constants.TRANSACTION_ID_ARG
 import com.krasovitova.currencywallet.R
 import com.krasovitova.currencywallet.base.BaseFragment
+import com.krasovitova.currencywallet.data.CurrencyRepository
 import com.krasovitova.currencywallet.databinding.FragmentTransactionBinding
+import com.krasovitova.currencywallet.di.TransactionViewModelFactory
+import com.krasovitova.currencywallet.transaction.presentation.SaveTransactionError
+import com.krasovitova.currencywallet.transaction.presentation.TransactionScreenEvent
+import com.krasovitova.currencywallet.transaction.presentation.TransactionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TransactionFragment : BaseFragment<FragmentTransactionBinding>(
     FragmentTransactionBinding::inflate
 ) {
-    private val viewModel: TransactionViewModel by viewModels()
-    private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
 
-    private val transactionIdArg by lazy {
-        arguments?.getInt(TRANSACTION_ID_ARG)
-    }
+    @Inject lateinit var viewModelFactory: TransactionViewModelFactory
+    @Inject lateinit var currencyRepository: CurrencyRepository
+
+    private val viewModel: TransactionViewModel by viewModels { viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textInputSum.apply {
-            saveInto(viewModel.sumState)
-        }
-
-        binding.autoCompleteTextCurrency.apply {
-            saveInto(viewModel.currencyState)
-        }
-
-        lifecycleScope.launch {
-            viewModel.currencies.collect {
-                val adapterCurrencyMenu = ArrayAdapter(
-                    requireContext(),
-                    R.layout.item_dropdown_text,
-                    it
-                )
-                binding.autoCompleteTextCurrency.setAdapter(adapterCurrencyMenu)
-            }
-        }
-
-        val adapterTransactionTypeMenu = ArrayAdapter(
-            requireContext(),
-            R.layout.item_dropdown_text,
-            viewModel.transactionTypes
-        )
-
-        binding.autoCompleteTextTransactionType.apply {
-            setAdapter(adapterTransactionTypeMenu)
-            saveInto(viewModel.typeState)
-        }
-
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val dateTransactionAreaView = binding.transactionDateClickArea
-
-        binding.textTransactionDate.apply {
-            saveInto(viewModel.dateState)
-        }
-
-        dateTransactionAreaView.setOnClickListener {
-            DatePickerDialog(
-                requireContext(), { _, year, month, day ->
-                    calendar.set(year, month, day)
-                    val dateString = dateFormat.format(calendar.time)
-                    binding.textTransactionDate.setText(dateString)
-                }, year, month, day
-            ).show()
-        }
+        val transactionId = arguments?.getInt(TRANSACTION_ID_ARG, 0) ?: 0
 
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        binding.buttonAddTransaction
+        setupTypeDropdown()
+        setupCurrencyDropdown()
+        setupDatePicker()
+
+        binding.textInputSum.doAfterTextChanged {
+            viewModel.updateSum(it?.toString().orEmpty())
+        }
 
         binding.buttonAddTransaction.setOnClickListener {
             viewModel.saveTransaction()
         }
 
-        handleSideEffects()
-
-        transactionIdArg?.let {
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.fetchTransaction(it)
-
-                withContext(Dispatchers.Main) {
-                    binding.autoCompleteTextCurrency.setText(viewModel.currencyState.value, false)
-                    binding.autoCompleteTextTransactionType.setText(
-                        viewModel.typeState.value,
-                        false
-                    )
-                    binding.textTransactionDate.setText(viewModel.dateState.value)
-                    binding.textInputSum.setText(viewModel.sumState.value)
+        lifecycleScope.launch {
+            viewModel.event.collect { event ->
+                when (event) {
+                    TransactionScreenEvent.NavigateBack ->
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    is TransactionScreenEvent.ValidationFailed ->
+                        showValidationErrors(event.errors)
                 }
+            }
+        }
+
+        if (transactionId != 0) {
+            lifecycleScope.launch {
+                viewModel.fetchTransaction(transactionId)
+                val state = viewModel.uiState.value
+                binding.textInputSum.setText(state.sum)
+                binding.autoCompleteTextCurrency.setText(state.currency, false)
+                binding.textTransactionDate.setText(state.date)
+                binding.autoCompleteTextTransactionType.setText(state.type, false)
             }
         }
     }
 
-    private fun TextView.saveInto(livedata: MutableLiveData<String>) {
-        addTextChangedListener {
-            livedata.postValue(it.toString())
+    private fun setupTypeDropdown() {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            viewModel.transactionTypes
+        )
+        binding.autoCompleteTextTransactionType.setAdapter(adapter)
+        binding.autoCompleteTextTransactionType.setOnItemClickListener { _, _, position, _ ->
+            viewModel.updateType(viewModel.transactionTypes[position])
         }
     }
 
-    private fun handleSideEffects() = lifecycleScope.launchWhenResumed {
-        viewModel.event.collect { effect ->
-            when (effect) {
-                is TransactionScreenEvent.ValidationFailed -> {
-                    handleFailedValidation(effect)
-                }
-                is TransactionScreenEvent.NavigateBack -> {
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
+    private fun setupCurrencyDropdown() {
+        lifecycleScope.launch {
+            currencyRepository.getUserCurrencies().collect { currencies ->
+                val abbreviations = currencies.map { it.abbreviation }
+                val adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    abbreviations
+                )
+                binding.autoCompleteTextCurrency.setAdapter(adapter)
             }
         }
+        binding.autoCompleteTextCurrency.setOnItemClickListener { parent, _, position, _ ->
+            viewModel.updateCurrency(parent.getItemAtPosition(position).toString())
+        }
     }
 
-    private fun handleFailedValidation(effect: TransactionScreenEvent.ValidationFailed) {
-        effect.errors.forEach { error ->
+    private fun setupDatePicker() {
+        val openPicker = {
+            val picker = MaterialDatePicker.Builder.datePicker().build()
+            picker.addOnPositiveButtonClickListener { millis ->
+                val formatted = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+                    .format(Date(millis))
+                viewModel.updateDate(formatted)
+                binding.textTransactionDate.setText(formatted)
+            }
+            picker.show(parentFragmentManager, null)
+        }
+        binding.transactionDateClickArea.setOnClickListener { openPicker() }
+        binding.inputLayoutTransactionDate.setEndIconOnClickListener { openPicker() }
+    }
+
+    private fun showValidationErrors(errors: List<SaveTransactionError>) {
+        binding.textCount.error = null
+        binding.textInputCurrency.error = null
+        binding.inputLayoutTransactionDate.error = null
+        binding.textInputTransactionType.error = null
+
+        errors.forEach { error ->
             when (error) {
-                SaveTransactionError.EMPTY_SUM -> {
+                SaveTransactionError.EMPTY_SUM ->
                     binding.textCount.error = getString(R.string.empty_sum_error)
-                }
-                SaveTransactionError.EMPTY_CURRENCY -> {
+                SaveTransactionError.EMPTY_CURRENCY ->
                     binding.textInputCurrency.error = getString(R.string.empty_currency_error)
-                }
-                SaveTransactionError.EMPTY_DATE -> {
+                SaveTransactionError.EMPTY_DATE ->
                     binding.inputLayoutTransactionDate.error = getString(R.string.empty_date_error)
-                }
-                SaveTransactionError.EMPTY_TYPE -> {
-                    binding.textInputTransactionType.error =
-                        getString(R.string.empty_type_transactions_error)
-                }
+                SaveTransactionError.EMPTY_TYPE ->
+                    binding.textInputTransactionType.error = getString(R.string.empty_type_transactions_error)
             }
         }
     }

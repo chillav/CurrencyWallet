@@ -87,7 +87,7 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>(
         }
 
         binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.buttonAddTransaction
@@ -128,7 +128,7 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>(
                     handleFailedValidation(effect)
                 }
                 is TransactionScreenEvent.NavigateBack -> {
-                    activity?.onBackPressed()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
         }

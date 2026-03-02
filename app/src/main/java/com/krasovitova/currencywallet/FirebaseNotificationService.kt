@@ -25,7 +25,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
             this,
             PUSH_INTENT_REQUEST_CODE,
             intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val channelId = getString(R.string.default_notification_channel_id);
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

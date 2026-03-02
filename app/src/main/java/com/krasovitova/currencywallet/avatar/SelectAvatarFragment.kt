@@ -34,7 +34,7 @@ class SelectAvatarFragment : BaseFragment<FragmentSelectAvatarBinding>(
             AVATAR_CHANGED_RESULT,
             bundleOf(AVATAR_CHANGED_RESULT_ARG to it.url)
         )
-        activity?.onBackPressed()
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +48,7 @@ class SelectAvatarFragment : BaseFragment<FragmentSelectAvatarBinding>(
         }
 
         binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }

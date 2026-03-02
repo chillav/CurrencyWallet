@@ -29,7 +29,7 @@ class CurrenciesFragment : BaseFragment<FragmentCurrenciesBinding>(
         }
 
         binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.textSearchCurrency.addTextChangedListener(

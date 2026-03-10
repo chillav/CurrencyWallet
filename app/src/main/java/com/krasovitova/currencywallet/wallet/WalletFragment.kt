@@ -14,7 +14,7 @@ import com.krasovitova.currencywallet.currency.CurrenciesFragment
 import com.krasovitova.currencywallet.currency.CurrencyChipAdapter
 import com.krasovitova.currencywallet.databinding.FragmentWalletBinding
 import com.krasovitova.currencywallet.transaction.TransactionFragment
-import com.krasovitova.currencywallet.transaction.TransactionMenu
+import com.krasovitova.currencywallet.transaction.presentation.TransactionMenu
 import com.krasovitova.currencywallet.wallet.WalletViewModel.Companion.ADD_CURRENCY_TAB_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

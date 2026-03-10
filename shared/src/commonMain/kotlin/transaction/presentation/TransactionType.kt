@@ -1,8 +1,8 @@
 package com.krasovitova.currencywallet.transaction.presentation
 
 enum class TransactionType(val title: String) {
-    INCOME(title = "Приход"),
-    EXPEND(title = "Расход");
+    INCOME(title = "ПРИХОД"),
+    EXPEND(title = "РАСХОД");
 
     companion object {
         fun titles() = listOf(INCOME.title, EXPEND.title)

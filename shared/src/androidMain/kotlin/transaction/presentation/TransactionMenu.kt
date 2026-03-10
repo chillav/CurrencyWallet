@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet.transaction
+package com.krasovitova.currencywallet.transaction.presentation
 
 enum class TransactionMenu(val title: String) {
     EDIT(title = "Редактировать"),

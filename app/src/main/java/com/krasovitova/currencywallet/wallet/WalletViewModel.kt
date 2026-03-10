@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.krasovitova.currencywallet.currency.CurrencyUi
 import com.krasovitova.currencywallet.data.CurrencyRepository
-import com.krasovitova.currencywallet.data.TransactionRepository
-import com.krasovitova.currencywallet.transaction.TransactionType
-import com.krasovitova.currencywallet.transaction.TransactionUi
+import com.krasovitova.currencywallet.transaction.domain.TransactionRepository
+import com.krasovitova.currencywallet.transaction.presentation.TransactionType
+import com.krasovitova.currencywallet.transaction.presentation.TransactionUi
 import com.krasovitova.currencywallet.utils.sum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -76,7 +76,7 @@ class WalletViewModel @Inject constructor(
 
                     list.add(
                         WalletDescriptionItems.Transaction(
-                            id = transactionUi.id,
+                            id = transactionUi.id ?: 0,
                             transactionName = "${transactionUi.sum} ${transactionUi.currency}",
                             type = TransactionType.getTypeByTitle(transactionUi.type)
                         )

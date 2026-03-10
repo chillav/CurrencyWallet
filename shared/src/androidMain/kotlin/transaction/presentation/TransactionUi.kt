@@ -1,4 +1,4 @@
-package com.krasovitova.currencywallet.transaction
+package com.krasovitova.currencywallet.transaction.presentation
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

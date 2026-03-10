@@ -1,6 +1,6 @@
 package com.krasovitova.currencywallet.wallet
 
-import com.krasovitova.currencywallet.transaction.TransactionType
+import com.krasovitova.currencywallet.transaction.presentation.TransactionType
 
 sealed class WalletDescriptionItems {
     data class Title(

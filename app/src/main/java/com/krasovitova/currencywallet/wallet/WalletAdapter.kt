@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ListAdapter
 import com.krasovitova.currencywallet.R
-import com.krasovitova.currencywallet.transaction.TransactionType
+import com.krasovitova.currencywallet.transaction.presentation.TransactionType
 
 class WalletAdapter(
     private val onTransactionClick: (WalletDescriptionItems.Transaction) -> Unit

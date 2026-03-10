@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_screen_title">Транзакция</string>
+    <string name="transaction_add_button">Добавить</string>
+    <string name="transaction_enter_amount">Введите сумму</string>
+    <string name="transaction_label_sum">Сумма</string>
+    <string name="transaction_label_currency">Валюта</string>
+    <string name="transaction_label_date">Дата</string>
+    <string name="transaction_label_type">Тип транзакции</string>
+</resources>

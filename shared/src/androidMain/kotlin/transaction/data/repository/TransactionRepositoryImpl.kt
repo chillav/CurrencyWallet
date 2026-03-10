@@ -1,16 +1,24 @@
 package com.krasovitova.currencywallet.transaction.data.repository
 
+import android.util.Log
+import com.krasovitova.currencywallet.transaction.data.database.TransactionDao
+import com.krasovitova.currencywallet.transaction.data.database.TransactionEntity
+import com.krasovitova.currencywallet.transaction.domain.TransactionRepository
 import com.krasovitova.currencywallet.transaction.presentation.TransactionUi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
-class TransactionRepository @Inject constructor(
+class TransactionRepositoryImpl(
     private val transactionDao: TransactionDao
-) {
-    private val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+) : TransactionRepository {
 
-    suspend fun saveTransaction(transactionUi: TransactionUi) {
+    private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault())
+
+    override suspend fun saveTransaction(transactionUi: TransactionUi) {
         val entity = TransactionEntity(
             id = transactionUi.id,
             sum = transactionUi.sum,
@@ -25,24 +33,19 @@ class TransactionRepository @Inject constructor(
         return try {
             val parsedDate = dateFormat.parse(date)?.time
             if (parsedDate == null) {
-                Timber.e("Date parsing returns null, date set to zero")
+                Log.e(TAG, "Date parsing returns null, date set to zero")
                 0L
             } else {
                 parsedDate
             }
-
         } catch (exception: ParseException) {
-            Timber.e(exception, "Date parsing failed, date set to zero")
+            Log.e(TAG, "Date parsing failed, date set to zero", exception)
             0L
         }
     }
 
-    fun getTransactions(): Flow<List<TransactionUi>> {
-        return transactionDao.getTransactions().map { it.mapToUi() }
-    }
-
-    private fun List<TransactionEntity>.mapToUi(): List<TransactionUi> {
-        return this.map { it.mapToUi() }
+    override fun getTransactions(): Flow<List<TransactionUi>> {
+        return transactionDao.getTransactions().map { list -> list.map { it.mapToUi() } }
     }
 
     private fun TransactionEntity.mapToUi(): TransactionUi {
@@ -55,11 +58,14 @@ class TransactionRepository @Inject constructor(
         )
     }
 
-    suspend fun getTransactionById(id: Int): TransactionUi {
+    override suspend fun getTransactionById(id: Int): TransactionUi {
         return transactionDao.getTransactionById(id).mapToUi()
     }
 
-    suspend fun deleteTransactionById(id: Int) {
+    override suspend fun deleteTransactionById(id: Int) {
         return transactionDao.deleteTransactionById(id)
     }
 }
+
+private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy"
+private const val TAG = "TransactionRepositoryImpl"

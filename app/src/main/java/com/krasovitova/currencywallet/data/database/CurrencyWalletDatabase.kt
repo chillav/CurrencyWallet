@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.krasovitova.currencywallet.data.database.currency.CurrencyDao
 import com.krasovitova.currencywallet.data.database.currency.CurrencyEntity
-import com.krasovitova.currencywallet.data.database.transaction.TransactionDao
-import com.krasovitova.currencywallet.data.database.transaction.TransactionEntity
+import com.krasovitova.currencywallet.transaction.data.database.TransactionDao
+import com.krasovitova.currencywallet.transaction.data.database.TransactionEntity
 
 @Database(entities = [CurrencyEntity::class, TransactionEntity::class], version = 1)
 abstract class CurrencyWalletDatabase : RoomDatabase() {
